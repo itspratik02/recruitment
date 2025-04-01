@@ -1,0 +1,16 @@
+body {
+    font-family: 'Arial', sans-serif;
+  }
+/* Custom styles */
+body {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .card {
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
