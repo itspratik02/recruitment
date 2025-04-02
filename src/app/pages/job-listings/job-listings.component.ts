@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { NgIf, NgFor, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-job-listings',
   standalone: true,
   templateUrl: './job-listings.component.html',
   styleUrls: ['./job-listings.component.css'],
-  imports: [CommonModule, NgIf, NgFor, FormsModule] 
+  imports: [CommonModule, NgIf, NgFor, FormsModule,NavbarComponent] 
 })
 export class JobListingsComponent {
   searchQuery = '';

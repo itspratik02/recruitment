@@ -1,1 +1,21 @@
-<p>navbar works!</p>
+<nav [class.hidden]="isHidden" class=" fixed top-0 left-0 w-full bg-transparent shadow-md z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-14">
+      <div class="flex items-center">
+        <img
+          src="centelonsolutions_logo-removebg-preview.png"
+          alt="Logo"
+          class="h-8"
+        />
+        <span class="text-white text-lg font-semibold ml-2">Centelon</span>
+      </div>
+
+      <!-- Navbar Links -->
+      <div class=" md:flex space-x-6">
+        <a href="#" class="text-white hover:text-blue-500 font-medium">Home</a>
+        <a href="#" class="text-white hover:text-blue-500 font-medium">Login</a>
+        <a href="#" class="text-white hover:text-blue-500 font-medium">About</a>
+      </div>
+    </div>
+  </div>
+</nav>

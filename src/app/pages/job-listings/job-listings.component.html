@@ -1,16 +1,17 @@
 <body>
-  <!-- Hero Section -->
+  <app-navbar></app-navbar>
   <div class="hero relative w-full h-screen bg-cover bg-center flex items-center justify-center">
     <div class="text-center text-white">
-      <h1 class="text-5xl font-bold animate-fadeIn" id="slogan">Find Your Dream Job</h1>
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight animate-fadeIn" id="slogan">
+        Find Your Dream Job
+      </h1>
       <p class="text-lg mt-4 opacity-80">Start your career with the best opportunities.</p>
     </div>
   </div>  
-  <!-- Job Listings Section -->
   <div id="jobSection" class="min-h-screen bg-gray-100 p-4 transition-opacity">
     <header class="bg-white shadow-md p-4 rounded-lg flex justify-between items-center sticky top-0 z-10">
-      <h1 class="text-xl font-semibold">Job Listings</h1>
-      <input
+      <h1 class="text-2xl font-bold text-gray-800 tracking-wide">Job Listings</h1>
+      <input 
         type="text"
         [(ngModel)]="searchQuery"
         placeholder="Search jobs..."
