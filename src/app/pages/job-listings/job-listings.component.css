@@ -1,16 +1,45 @@
-body {
-    font-family: 'Arial', sans-serif;
-  }
-/* Custom styles */
-body {
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .card {
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .card:hover {
-    transform: scale(1.05);
-  }
-  
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 2s ease-in-out;
+}
+
+.hero {
+  height: 100vh; /* Full screen height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(135deg, #2fd2ff, #5271ff, #a200ff);
+  background-size: 200% 200%;
+  animation: gradientAnimation 6s ease infinite;
+  position: fixed;
+}
+
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+#jobSection{
+  position: absolute;
+  width: 100%;
+  top: 100%;
+}
+.card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
