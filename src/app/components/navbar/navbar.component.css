@@ -20,11 +20,11 @@ header {
   }
 
   nav {
-    height: 70px; /* Reduced height */
-    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
-    backdrop-filter: blur(10px); /* Glass effect with blur */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* Light border for separation */
+    height: 70px;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 5%;
   }
 
@@ -40,8 +40,7 @@ header {
 
 nav a {
   font-size: 1.5rem; /* Adjust font size */
-  color: #4b5563; /* Neutral gray color */
-  transition: color 0.3s ease;
+
 }
 
 nav a:hover {
@@ -58,7 +57,7 @@ nav .hidden.md\\:flex {
 
 a {
   cursor: pointer;
-  transition: color 0.3s ease;
+  /* transition: color 0.3s ease; */
 }
 
 a:hover {

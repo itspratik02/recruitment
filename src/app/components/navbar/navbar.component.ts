@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
   imports: [RouterModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
@@ -14,6 +13,6 @@ export class NavbarComponent {
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.scrollY || document.documentElement.scrollTop;
-    this.isHidden = scrollPosition > 470; 
+    this.isHidden = scrollPosition > 870; 
   }
 }
