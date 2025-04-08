@@ -1,1 +1,133 @@
-<p>register works!</p>
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <!-- Container -->
+    <div class="flex flex-col lg:flex-row w-full max-w-6xl shadow-xl rounded-lg overflow-hidden">
+      
+      <!-- Left Panel -->
+      <div class="hidden lg:flex flex-col justify-center items-center bg-gradient-to-r from-yellow-400 to-yellow-500 w-1/2 p-10">
+        <img src="assets/mentorship-image.png" alt="Mentorship" class="w-3/4 rounded-xl shadow-xl" />
+        <h2 class="text-4xl font-bold text-white mt-6">Register</h2>
+        <p class="text-lg text-white mt-2 text-center">Join us and grow your career.</p>
+      </div>
+  
+      <!-- Right Panel -->
+      <div class="w-full lg:w-1/2 bg-white p-10">
+        <div class="max-w-md mx-auto">
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-800">Sign Up</h2>
+            <p class="text-gray-600 mt-2">Join us as a Candidate or Recruiter</p>
+          </div>
+  
+         <!-- Inside your component HTML -->
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+  <!-- First Name -->
+  <div>
+    <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+    <input
+      type="text"
+      id="firstName"
+      formControlName="firstName"
+      [ngClass]="{ 'border-red-500': isFieldInvalid('firstName') }"
+      class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    />
+    <p *ngIf="isFieldInvalid('firstName')" class="text-sm text-red-500 mt-1">First name is required</p>
+  </div>
+
+  <!-- Last Name -->
+  <div>
+    <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+    <input
+      type="text"
+      id="lastName"
+      formControlName="lastName"
+      [ngClass]="{ 'border-red-500': isFieldInvalid('lastName') }"
+      class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    />
+    <p *ngIf="isFieldInvalid('lastName')" class="text-sm text-red-500 mt-1">Last name is required</p>
+  </div>
+
+  <!-- Email -->
+  <div>
+    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+    <input
+      type="email"
+      id="email"
+      formControlName="email"
+      [ngClass]="{ 'border-red-500': isFieldInvalid('email') }"
+      class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    />
+    <p *ngIf="isFieldInvalid('email')" class="text-sm text-red-500 mt-1">Please enter a valid email address</p>
+  </div>
+
+  <!-- Phone -->
+  <div>
+    <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+    <input
+      type="text"
+      id="phone"
+      formControlName="phone"
+      [ngClass]="{ 'border-red-500': isFieldInvalid('phone') }"
+      class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    />
+    <p *ngIf="isFieldInvalid('phone')" class="text-sm text-red-500 mt-1">Please enter a valid 10-digit phone number</p>
+  </div>
+
+  <!-- Password -->
+  <div class="relative">
+    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+    <input
+      [type]="showPassword ? 'text' : 'password'"
+      id="password"
+      formControlName="password"
+      [ngClass]="{ 'border-red-500': isFieldInvalid('password') }"
+      class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    />
+    <span class="absolute right-3 top-9 cursor-pointer text-sm text-blue-500" (click)="togglePassword()">
+      {{ showPassword ? 'Hide' : 'Show' }}
+    </span>
+    <p *ngIf="isFieldInvalid('password')" class="text-sm text-red-500 mt-1">Password must be at least 6 characters</p>
+  </div>
+
+  <!-- Confirm Password -->
+  <div class="relative">
+    <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+    <input
+      [type]="showConfirmPassword ? 'text' : 'password'"
+      id="confirmPassword"
+      formControlName="confirmPassword"
+      [ngClass]="{
+        'border-red-500': !isPasswordMatch() && registerForm.get('confirmPassword')?.touched,
+        'border-green-500': isPasswordMatch()
+      }"
+      class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    />
+    <span class="absolute right-3 top-9 cursor-pointer text-sm text-blue-500" (click)="toggleConfirmPassword()">
+      {{ showConfirmPassword ? 'Hide' : 'Show' }}
+    </span>
+    <p *ngIf="!isPasswordMatch() && registerForm.get('confirmPassword')?.touched" class="text-sm text-red-500 mt-1">
+      Passwords do not match
+    </p>
+  </div>
+  
+    <!-- User Type -->
+    <div>
+      <label for="userType" class="block text-sm font-medium text-gray-700">User Type</label>
+      <select id="userType" formControlName="userType"
+        class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <option value="">Select</option>
+        <option value="candidate">Candidate</option>
+        <option value="hr">HR Executive</option>
+        <option value="recruitment-specialist">Talent Acquisition Team</option>
+      </select>
+    </div>
+  
+    <!-- Submit -->
+    <button type="submit" [disabled]="registerForm.invalid || isLoading"
+      class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50">
+      {{ isLoading ? 'Registering...' : 'Register' }}
+    </button>
+  </form>
+  
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,49 @@
+:host {
+    display: block;
+    height: 100vh;
+  }
+  
+  .bg-gradient-to-r {
+    background: linear-gradient(to right, #fbbf24, #f59e0b);
+  }
+  
+  img {
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  button {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  input, select {
+    font-size: 1rem;
+  }
+  
+  input {
+    border: 1px solid #d1d5db; /* Default border color */
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #2563eb; /* Blue border on focus */
+  }
+  
+  input.border-red-500 {
+    border-color: #ef4444; /* Red border for invalid fields */
+  }
+  
+  input.border-green-500 {
+    border-color: #10b981; /* Green border for valid fields */
+  }
+  
+  .text-red-500 {
+    color: #ef4444; /* Red text for validation messages */
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1f2937;
+  }

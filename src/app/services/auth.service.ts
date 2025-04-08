@@ -26,11 +26,11 @@ export class AuthService {
     });
   }
 
-  logout(): void {
-    this.isAuthenticatedSubject.next(false);
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userEmail');
-  }
+  // logout(): void {
+  //   this.isAuthenticatedSubject.next(false);
+  //   localStorage.removeItem('isLoggedIn');
+  //   localStorage.removeItem('userEmail');
+  // }
 
   checkAuthStatus(): void {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
