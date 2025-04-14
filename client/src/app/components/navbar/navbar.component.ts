@@ -13,6 +13,6 @@ export class NavbarComponent {
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.scrollY || document.documentElement.scrollTop;
-    this.isHidden = scrollPosition > 870; 
+    this.isHidden = scrollPosition < 870; 
   }
 }

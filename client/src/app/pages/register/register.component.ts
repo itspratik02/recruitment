@@ -1,13 +1,14 @@
 import { NgClass, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  imports: [NgClass, ReactiveFormsModule, NgIf]
+  imports: [NgClass, ReactiveFormsModule, NgIf,NavbarComponent]
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
