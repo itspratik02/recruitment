@@ -1,10 +1,10 @@
 package com.example.Employee_recruitment_system.controller;
 
+import com.example.Employee_recruitment_system.model.User;
 import com.example.Employee_recruitment_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.Employee_recruitment_system.model.User;
 
 import java.util.List;
 import java.util.Map;

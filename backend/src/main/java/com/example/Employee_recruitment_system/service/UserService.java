@@ -25,7 +25,7 @@ public class UserService {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setApproved(user.getRole() == UserRole.ADMIN); // Auto-approve Admin
+//        user.setIsApproved(user.getRole() == UserRole.ADMIN); // Auto-approve Admin
         userRepository.save(user);
         return "Registration successful. Awaiting admin approval.";
     }
@@ -33,10 +33,10 @@ public class UserService {
     public String login(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
-
-        if (!user.isApproved()) {
-            return "User not approved by admin yet.";
-        }
+//
+//        if (!user.isApproved()) {
+//            return "User not approved by admin yet.";
+//        }
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             return "Invalid credentials";
@@ -56,14 +56,14 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.setApproved(true);
+//        user.setApproved(true);
         userRepository.save(user);
         return "User approved successfully.";
     }
 
-    public List<User> getUnapprovedUsers() {
-        return userRepository.findAll().stream()
-                .filter(u -> !u.isApproved())
-                .collect(Collectors.toList());
-    }
+//    public List<User> getUnapprovedUsers() {
+////        return userRepository.findAll().stream()
+////                .filter(u -> !u.isApproved())
+////                .collect(Collectors.toList());
+//    }
 }
