@@ -82,19 +82,18 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     if (this.registerForm.valid) {
       this.isLoading = true;
-      const user = this.registerForm.value;
-      
-      console.log('User data:', user);
-      this.authService.registerUser(user).subscribe({
-        next: (res) => {
-          this.isLoading = false;
-          alert('Registration successful!'+res);
-        },
-        error: (err) => {
-          this.isLoading = false;
-          alert(err?.error?.message || 'Something went wrong!');
-        }
-      });
+      const formData = this.registerForm.value;
+
+      // Concatenate firstName and lastName into a single name field
+      const user = {
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+        userType: formData.userType
+      };
+
+      this.register(user);
     } else {
       Object.keys(this.registerForm.controls).forEach(key => {
         const control = this.registerForm.get(key);
@@ -104,5 +103,24 @@ export class RegisterComponent implements OnInit {
       });
     }
   }
+
+  /**
+   * Registers a user using the AuthService.
+   * @param user - The user data to register.
+   */
+  register(user: any): void {
+    this.authService.registerUser(user).subscribe({
+      next: (res: any) => {
+        console.log('Registration successful:', res);
+        this.isLoading = false;
+        alert(res.message || 'Registration successful!');
+      },
+      error: (err: any) => {
+        console.error('Registration error:', err);
+        this.isLoading = false;
+        alert(err.message || 'Something went wrong during registration!');
+      }
+    });
   }
+}
 

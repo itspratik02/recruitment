@@ -1,0 +1,102 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(ellipse at center, #0e0e10 0%, #0c0c0f 100%);
+    color: #fff;
+
+  }
+
+  html{
+    background-color: #283618;
+  }
+  
+  .dashboard {
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 30px;
+    border-radius: 24px;
+    background: rgba(24, 19, 19, 0.7);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(27, 23, 23, 0.5);
+  }
+  
+  .dashboard h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-weight: 900;
+    text-align: center;
+    background: linear-gradient(to right, #2fd2ff, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .no-users {
+    background-color: rgba(50, 50, 60, 0.3);
+    color: #999;
+    padding: 16px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 1.05rem;
+  }
+  
+  .user-card {
+    background-color: rgba(24, 19, 19, 0.5);
+    padding: 20px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .user-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.9);
+  }
+  
+  .user-card h3 {
+    font-size: 1.3rem;
+    margin: 0 0 6px;
+    color: #fff;
+  }
+  
+  .user-card p {
+    font-size: 0.95rem;
+    color: #ccc;
+    margin: 3px 0;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  
+  .btn {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .approve {
+    background-color: #14b8a6;
+    color: #fff;
+  }
+  
+  .reject {
+    background-color: #be123c;
+    color: #fff;
+  }
+  
+  .approve:hover {
+    background-color: #0d9488;
+  }
+  
+  .reject:hover {
+    background-color: #9f1239;
+  }
+  

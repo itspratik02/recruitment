@@ -44,15 +44,30 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.isLoading = true;
       try {
-        await this.authService.login(
+        const response = await this.authService.login(
           this.loginForm.value.email,
           this.loginForm.value.password
-        );
-        
-        // Get return URL from query params or default to job listings
-        const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-        this.router.navigateByUrl(returnUrl);
+        ).toPromise();
+
+        console.log('Login response:', response); // Debugging log
+
+        if (response && typeof response === 'object' && response.message.includes('Login successful')) {
+          alert('Login successful! Redirecting...');
+
+          // Check if the user is an admin
+          if (response.message.includes('ADMIN')) {
+            console.log('Redirecting to /dashboard'); // Debugging log
+            this.router.navigateByUrl('/dashboard'); // Redirect to admin dashboard
+          } else {
+            const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+            console.log('Redirecting to', returnUrl); // Debugging log
+            this.router.navigateByUrl(returnUrl); // Redirect to the return URL or home page
+          }
+        } else {
+          alert(response?.message || 'Login failed. Please try again.');
+        }
       } catch (error) {
+        alert('An error occurred during login. Please try again later.');
         console.error('Login error:', error);
       } finally {
         this.isLoading = false;

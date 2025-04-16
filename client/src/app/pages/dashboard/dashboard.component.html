@@ -1,1 +1,17 @@
-<p>dashboard works!</p>
+
+<div class="dashboard">
+    <h1>Pending Users</h1>
+    <div class="no-users" *ngIf="pendingUsers.length === 0">
+      No pending users to display.
+    </div>
+    <div class="user-card" *ngFor="let user of pendingUsers">
+      <h3>{{ user.name }}</h3>
+      <p>{{ user.email }}</p>
+      <p>{{ user.userType }}</p>
+      <div class="actions">
+        <button class="btn approve" (click)="updateStatus(user.authId, 'APPROVED')">Approve</button>
+        <button class="btn reject" (click)="updateStatus(user.authId, 'REJECTED')">Reject</button>
+      </div>
+    </div>
+  </div>
+  

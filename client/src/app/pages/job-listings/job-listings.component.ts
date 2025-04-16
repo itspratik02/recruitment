@@ -46,9 +46,9 @@ export class JobListingsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authService.isAuthenticated$.subscribe(
-      isAuthenticated => this.isLoggedIn = isAuthenticated
-    );
+    this.authService.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
+      this.isLoggedIn = isAuthenticated;
+    });
   }
 
   get filteredJobs() {

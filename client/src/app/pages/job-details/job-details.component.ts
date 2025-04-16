@@ -41,9 +41,9 @@ export class JobDetailsComponent implements OnInit {
       ]
     };
 
-    this.authService.isAuthenticated$.subscribe(
-      isAuthenticated => this.isLoggedIn = isAuthenticated
-    );
+    this.authService.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
+      this.isLoggedIn = isAuthenticated;
+    });
   }
 
   applyForJob() {

@@ -1,12 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-
-
 export class AuthService {
   private baseUrl = 'http://localhost:8080/api/users'; 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
@@ -14,20 +12,15 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  registerUser(userData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register`, userData);
+  login(email: string, password: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.baseUrl}/login`, { email, password });
   }
 
-  login(email: string, password: string): Observable<string> {
-    return this.http.post<string>(`${this.baseUrl}/login`, { email, password });
+  registerUser(user: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/register`, user);
   }
 
-  checkAuthStatus(): void {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    this.isAuthenticatedSubject.next(isLoggedIn);
-  }
-
-  getCurrentUser(): string | null {
-    return localStorage.getItem('userEmail');
+  setAuthenticated(isAuthenticated: boolean): void {
+    this.isAuthenticatedSubject.next(isAuthenticated);
   }
 }
