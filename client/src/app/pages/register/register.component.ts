@@ -2,13 +2,15 @@ import { NgClass, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
-
+import { AuthService } from '../../services/auth.service';
+import { provideHttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-register',
   standalone: true,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  imports: [NgClass, ReactiveFormsModule, NgIf,NavbarComponent]
+  imports: [NgClass, ReactiveFormsModule, NgIf, NavbarComponent],
+  providers: [] // No need for provideHttpClient here
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
@@ -16,7 +18,7 @@ export class RegisterComponent implements OnInit {
   showPassword = false;
   showConfirmPassword = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -80,16 +82,20 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     if (this.registerForm.valid) {
       this.isLoading = true;
-      console.log('Registration Data:', this.registerForm.value);
-
-      // Simulate API call
-      setTimeout(() => {
-        this.isLoading = false;
-        alert('Registration successful!');
-        this.registerForm.reset(); // Reset the form after successful registration
-      }, 1500);
+      const user = this.registerForm.value;
+      
+      console.log('User data:', user);
+      this.authService.registerUser(user).subscribe({
+        next: (res) => {
+          this.isLoading = false;
+          alert('Registration successful!'+res);
+        },
+        error: (err) => {
+          this.isLoading = false;
+          alert(err?.error?.message || 'Something went wrong!');
+        }
+      });
     } else {
-      // Mark all fields as touched to trigger validation messages
       Object.keys(this.registerForm.controls).forEach(key => {
         const control = this.registerForm.get(key);
         if (control) {
@@ -98,4 +104,5 @@ export class RegisterComponent implements OnInit {
       });
     }
   }
-}
+  }
+

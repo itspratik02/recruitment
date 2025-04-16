@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:4200") // 👈 your Angular port
+@RequestMapping("/api/users") // 👈 your Angular port
 public class UserController {
 
     @Autowired
@@ -20,7 +19,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
-        String message = userService.register(user);
+        String message =   userService.register(user);
         return ResponseEntity.ok(message);
     }
 

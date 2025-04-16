@@ -1,36 +1,26 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class AuthService {
+  private baseUrl = 'http://localhost:8080/api/users'; 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor() {
-    // Check auth status when service is initialized
-    this.checkAuthStatus();
+  constructor(private http: HttpClient) {}
+
+  registerUser(userData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register`, userData);
   }
 
-  login(email: string, password: string): Promise<void> {
-    return new Promise((resolve) => {
-      // Simulate API call
-      setTimeout(() => {
-        this.isAuthenticatedSubject.next(true);
-        localStorage.setItem('isLoggedIn', 'true');
-        // Store user email for persistence
-        localStorage.setItem('userEmail', email);
-        resolve();
-      }, 1500);
-    });
+  login(email: string, password: string): Observable<string> {
+    return this.http.post<string>(`${this.baseUrl}/login`, { email, password });
   }
-
-  // logout(): void {
-  //   this.isAuthenticatedSubject.next(false);
-  //   localStorage.removeItem('isLoggedIn');
-  //   localStorage.removeItem('userEmail');
-  // }
 
   checkAuthStatus(): void {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';

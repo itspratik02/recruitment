@@ -23,11 +23,21 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role; // Enum: ADMIN, HR, HIRING_TEAM, CANDIDATE
+    private UserRole userType; // Enum: ADMIN, HR, HIRING_TEAM, CANDIDATE
 
     private Long referenceId; // ID of HR, Candidate, HiringTeam, etc.
 
     private ApprovalStatus isApproved = ApprovalStatus.PENDING;
 
-    // Getters and Setters
+    public String toString() {
+        return "User{" +
+                "authId=" + authId +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + userType +
+                ", referenceId=" + referenceId +
+                ", isApproved=" + isApproved +
+                '}';
+    }
+
 }

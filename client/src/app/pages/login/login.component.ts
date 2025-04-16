@@ -9,7 +9,7 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule,NavbarComponent],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, NavbarComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
