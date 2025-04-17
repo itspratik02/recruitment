@@ -16,6 +16,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long authId;
 
+    @Transient
+    private String name;
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -27,7 +29,8 @@ public class User {
 
     private Long referenceId; // ID of HR, Candidate, HiringTeam, etc.
 
-    private ApprovalStatus isApproved = ApprovalStatus.PENDING;
+    @Enumerated(EnumType.STRING)
+    private ApprovalStatus isApproved;
 
     public String toString() {
         return "User{" +

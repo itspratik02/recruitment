@@ -1,6 +1,7 @@
 package com.example.Employee_recruitment_system.controller;
 
 import com.example.Employee_recruitment_system.model.User;
+import com.example.Employee_recruitment_system.model.ApprovalStatus;
 import com.example.Employee_recruitment_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +19,16 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
-        String message =   userService.register(user);
-        return ResponseEntity.ok(message);
+    public ResponseEntity<Map<String, String>> register(@RequestBody User user) {
+        return ResponseEntity.ok(Map.of("message",userService.register(user)));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, String> credentials) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> credentials) {
         String email = credentials.get("email");
         String password = credentials.get("password");
         String message = userService.login(email, password);
-        return ResponseEntity.ok(message);
+        return ResponseEntity.ok(Map.of("message", message));
     }
 
     @PutMapping("/approve/{userId}")
@@ -42,6 +42,18 @@ public class UserController {
     @GetMapping("/unapproved")
     public ResponseEntity<List<User>> listUnapprovedUsers() {
         return ResponseEntity.ok(userService.getUnapprovedUsers());
+    }
+
+    @GetMapping("/pending-users")
+    public ResponseEntity<List<User>> getPendingUsers() {
+        return ResponseEntity.ok(userService.getPendingUsers());
+    }
+
+    @PutMapping("/update-status/{userId}")
+    public ResponseEntity<String> updateApprovalStatus(
+            @PathVariable Long userId,
+            @RequestParam ApprovalStatus status) {
+        return ResponseEntity.ok(userService.updateApprovalStatus(userId, status));
     }
 }
 
