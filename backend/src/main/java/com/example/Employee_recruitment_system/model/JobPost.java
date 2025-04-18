@@ -1,9 +1,12 @@
 package com.example.Employee_recruitment_system.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.time.LocalDate;
 
 @Entity
+@Data
 public class JobPost {
 
     @Id
@@ -23,5 +26,10 @@ public class JobPost {
     private LocalDate postDate;
     private LocalDate applicationDeadline;
 
-    // Getters and Setters
+    @Transient
+    private long appliedCount;
+
+    @Transient
+    private String createdByName;
+
 }
