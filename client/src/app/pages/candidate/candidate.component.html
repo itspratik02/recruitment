@@ -1,0 +1,24 @@
+<div class="min-h-screen bg-gray-100 p-8">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">Available Job Posts</h1>
+  <div *ngFor="let job of jobs" class="bg-white p-6 rounded-lg shadow-md mb-4">
+    <h2 class="text-xl font-semibold text-gray-800">{{ job.title }}</h2>
+    <p class="text-gray-600">{{ job.company }}</p>
+    <p class="text-gray-500">{{ job.location }}</p>
+    <p class="mt-2 text-gray-700">{{ job.description }}</p>
+    <div class="mt-4 flex space-x-4">
+      <button 
+        (click)="applyForJob(job)" 
+        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+        Apply Now
+      </button>
+      <button 
+        (click)="viewJobDetails(job.id)" 
+        class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
+        View Details
+      </button>
+    </div>
+  </div>
+
+  <h1 class="text-3xl font-bold text-gray-800 mt-12 mb-6">Profile Section</h1>
+  <app-candidate-details></app-candidate-details>
+</div>
