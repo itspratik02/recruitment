@@ -7,15 +7,17 @@ import { AboutComponent } from './pages/about/about.component';
 import { JobDetailsComponent } from './pages/job-details/job-details.component';
 import { CandidateDetailsComponent } from './pages/candidate-details/candidate-details.component';
 import { HiringTeamComponent } from './pages/hiring-team/hiring-team.component';
+import { CandidateComponent } from './pages/candidate/candidate.component';
 
 export const routes: Routes = [
   { path: '', component: JobListingsComponent },
-  { path:'login', component: LoginComponent },
-  { path: 'job/:id', component: JobDetailsComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'job/:id', component: JobDetailsComponent },
   { path: 'candidate-details', component: CandidateDetailsComponent },
-  { path: 'ADMINdashboard', component: DashboardComponent },
-  {
-    path: 'hiring-team',component:HiringTeamComponent}
-  
+  { path: 'ADMIN-dashboard', component: DashboardComponent },
+  { path: 'HR-dashboard', component: DashboardComponent },
+  { path: 'HIRING_TEAM-dashboard', component: DashboardComponent },
+  { path: 'CANDIDATE-dashboard', component: CandidateComponent },
+  { path: 'hiring-team', component: HiringTeamComponent }
 ];
