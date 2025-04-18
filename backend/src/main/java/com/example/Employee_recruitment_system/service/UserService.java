@@ -84,7 +84,7 @@ public class UserService {
             return "Invalid credentials";
         }
 
-        return "Login successful for role: " + user.getUserType();
+        return  ""+user.getUserType();
     }
 
     public String approveUser(Long userId, String adminEmail) {

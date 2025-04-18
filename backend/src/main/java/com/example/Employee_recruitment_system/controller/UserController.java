@@ -27,8 +27,8 @@ public class UserController {
     public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> credentials) {
         String email = credentials.get("email");
         String password = credentials.get("password");
-        String message = userService.login(email, password);
-        return ResponseEntity.ok(Map.of("message", message));
+        String role = userService.login(email, password);
+        return ResponseEntity.ok(Map.of("role", role));
     }
 
     @PutMapping("/approve/{userId}")

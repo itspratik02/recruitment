@@ -49,22 +49,21 @@ export class LoginComponent implements OnInit {
           this.loginForm.value.password
         ).toPromise();
 
-        console.log('Login response:', response); // Debugging log
-
-        if (response && typeof response === 'object' && response.message.includes('Login successful')) {
-          alert('Login successful! Redirecting...');
-
-          // Check if the user is an admin
-          if (response.message.includes('ADMIN')) {
+        
+        console.log('Login response:', response?.message);
+        if (response) {
+          
+          
+          
             console.log('Redirecting to /dashboard'); // Debugging log
-            this.router.navigateByUrl('/dashboard'); // Redirect to admin dashboard
-          } else {
-            const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-            console.log('Redirecting to', returnUrl); // Debugging log
-            this.router.navigateByUrl(returnUrl); // Redirect to the return URL or home page
-          }
+            this.router.navigateByUrl(`/${response}dashboard`); // Redirect to admin dashboard
+          // } else {
+          //   const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+          //   console.log('Redirecting to', returnUrl); // Debugging log
+          //   this.router.navigateByUrl(returnUrl); // Redirect to the return URL or home page
+          // }
         } else {
-          alert(response?.message || 'Login failed. Please try again.');
+          alert(response || 'Login failed. Please try again.');
         }
       } catch (error) {
         alert('An error occurred during login. Please try again later.');
