@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/jobposts")
@@ -17,19 +16,19 @@ public class JobPostController {
     @Autowired
     private JobPostService jobPostService;
 
-    @PostMapping
+    @PostMapping("/createpost")
     public ResponseEntity<JobPost> createJobPost(@RequestBody JobPost jobPost) {
         return new ResponseEntity<>(jobPostService.saveJobPost(jobPost), HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/getposts")
     public ResponseEntity<List<JobPost>> getAllJobPosts() {
         return new ResponseEntity<>(jobPostService.getAllJobPosts(), HttpStatus.OK);
     }
 
     @GetMapping("/team/{hiringTeamId}")
-    public ResponseEntity<List<Map<String, Object>>> getPostsByHiringTeam(@PathVariable Long hiringTeamId) {
-        List<Map<String, Object>> posts = jobPostService.getAllJobPostsForTeam(hiringTeamId);
+    public ResponseEntity<List<JobPost>> getPostsByHiringTeam(@PathVariable Long hiringTeamId) {
+        List<JobPost> posts = jobPostService.getAllAvailableJobPosts();
         return ResponseEntity.ok(posts);
     }
 

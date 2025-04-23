@@ -44,7 +44,7 @@ public class UserService {
 
         if (user.getUserType() == UserRole.CANDIDATE) {
             Candidate candidate = new Candidate();
-            candidate.setName(user.getName()); // Use the name field from User
+            candidate.setFullName(user.getName()); // Use the name field from User
             candidate.setEmail(user.getEmail());
             candidate.setPhone("DefaultPhone"); // Placeholder
             Candidate savedCandidate = candidateRepository.save(candidate);

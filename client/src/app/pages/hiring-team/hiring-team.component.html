@@ -51,12 +51,12 @@
     <div class="filter-section flex flex-wrap items-center justify-between gap-4 mb-8">
       <div class="flex gap-4">
         <button 
-          (click)="createJobPost()" 
+          (click)="toggleCreateForm()" 
           class="action-button flex items-center px-6 py-3 bg-gradient-to-r from-indigo-500 to-blue-600 text-white rounded-lg hover:from-indigo-600 hover:to-blue-700 shadow-lg">
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
           </svg>
-          Create Job Post
+          {{ showCreateForm ? 'Close Form' : 'Create Job Post' }}
         </button>
       </div>
       
@@ -73,8 +73,109 @@
       </div>
     </div>
 
+    <!-- Create Job Post Form -->
+    <div *ngIf="showCreateForm" class="mb-8 bg-white rounded-lg shadow-lg p-6 card">
+      <h2 class="text-2xl font-bold mb-6 text-gray-800">Create New Job Post</h2>
+      <form (ngSubmit)="createJobPost()" #jobForm="ngForm" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Job Title</label>
+            <input 
+              type="text" 
+              [(ngModel)]="newJobPost.title" 
+              name="title" 
+              required
+              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
+            >
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Location</label>
+            <input 
+              type="text" 
+              [(ngModel)]="newJobPost.location" 
+              name="location" 
+              required
+              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
+            >
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Experience Required (years)</label>
+            <input 
+              type="number" 
+              [(ngModel)]="newJobPost.experienceRequired" 
+              name="experienceRequired" 
+              required
+              min="0"
+              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
+            >
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Application Deadline</label>
+            <input 
+              type="date" 
+              [(ngModel)]="newJobPost.applicationDeadline" 
+              name="applicationDeadline" 
+              required
+              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Job Description</label>
+          <textarea 
+            [(ngModel)]="newJobPost.description" 
+            name="description" 
+            required
+            rows="4"
+            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
+          ></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Requirements</label>
+          <textarea 
+            [(ngModel)]="newJobPost.requirements" 
+            name="requirements" 
+            required
+            rows="4"
+            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
+          ></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Responsibilities</label>
+          <textarea 
+            [(ngModel)]="newJobPost.responsibilities" 
+            name="responsibilities" 
+            required
+            rows="4"
+            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
+          ></textarea>
+        </div>
+
+        <div class="flex justify-end space-x-4">
+          <button 
+            type="button"
+            (click)="toggleCreateForm()"
+            class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+            Cancel
+          </button>
+          <button 
+            type="submit"
+            [disabled]="!jobForm.form.valid"
+            class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed">
+            Create Job Post
+          </button>
+        </div>
+      </form>
+    </div>
+
     <!-- Job Posts Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-gradient-to-br">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div *ngFor="let job of filteredJobPosts; let i = index" 
            [class]="'card ' + (i % 3 === 0 ? 'blue-gradient' : i % 3 === 1 ? 'purple-gradient' : 'green-gradient')">
         <div class="p-6">
@@ -105,30 +206,27 @@
               </svg>
               {{ job.appliedCount }} Applications
             </div>
+
+            <div class="flex items-center text-gray-600">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Deadline: {{ job.applicationDeadline | date }}
+            </div>
           </div>
 
-          <div class="mt-6 flex gap-2">
-            <button 
-              (click)="createAssessment(job.jdid)"
-              class="action-button flex-1 px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg hover:from-emerald-600 hover:to-green-700 shadow-md">
-              Create Assessment
-            </button>
+          <div class="mt-6">
+            <div class="mb-4 text-sm text-gray-600">
+              <strong>Experience Required:</strong> {{ job.experienceRequired }} years
+            </div>
             
-            <button 
-              (click)="editJob(job)"
-              class="action-button p-2 text-gray-700 rounded-lg hover:bg-gray-100/50 backdrop-blur-sm">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-              </svg>
-            </button>
-            
-            <button 
-              (click)="deleteJob(job.jdid)"
-              class="action-button p-2 text-red-600 rounded-lg hover:bg-red-50/50 backdrop-blur-sm">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-              </svg>
-            </button>
+            <div class="space-y-2">
+              <button 
+                (click)="deleteJob(job.jdid)"
+                class="w-full px-4 py-2 text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition-colors">
+                Delete Job Post
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@ import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/users") // 👈 your Angular port
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
