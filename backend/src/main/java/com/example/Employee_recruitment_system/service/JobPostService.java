@@ -6,6 +6,8 @@ import com.example.Employee_recruitment_system.repository.CandidateApplicationRe
 import com.example.Employee_recruitment_system.repository.HiringTeamRepository;
 import com.example.Employee_recruitment_system.repository.JobPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,15 +25,19 @@ public class JobPostService {
     @Autowired
     private HiringTeamRepository hiringTeamRepository;
 
-    public JobPost saveJobPost(JobPost jobPost, Long hiringTeamId) {
-        HiringTeam hiringTeam = hiringTeamRepository.findById(hiringTeamId)
+    public JobPost saveJobPost(JobPost jobPost) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();  // Extract email from JWT
+
+        HiringTeam hiringTeam = hiringTeamRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Hiring team not found"));
 
         jobPost.setHiringTeam(hiringTeam);
-
+        jobPost.setPostDate(LocalDate.now());
 
         return jobPostRepository.save(jobPost);
     }
+
 
 
 

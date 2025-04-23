@@ -66,4 +66,13 @@ public class CandidateProfileService {
     public List<Certificate> getCertificates(Long candidateId) {
         return certificateRepository.findByCandidateCandidateId(candidateId);
     }
+
+    public Candidate getCandidateProfile(Long candidateId) {
+        return candidateRepository.findById(candidateId)
+                .orElseThrow(() -> new RuntimeException("Candidate not found"));
+    }
+
+    public void updateCandidateProfile(Candidate candidate) {
+        candidateRepository.save(candidate); // This will update the candidate's profile
+    }
 }

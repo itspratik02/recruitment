@@ -17,11 +17,11 @@ public class JobPostController {
     private JobPostService jobPostService;
 
     @PostMapping("/createjobposts")
-    public ResponseEntity<JobPost> createJobPost(@RequestBody JobPost jobPost,
-                                                 @RequestParam Long hiringTeamId) {
-        JobPost saved = jobPostService.saveJobPost(jobPost, hiringTeamId);
+    public ResponseEntity<JobPost> createJobPost(@RequestBody JobPost jobPost) {
+        JobPost saved = jobPostService.saveJobPost(jobPost);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
+
 
     @GetMapping("/getposts")
     public ResponseEntity<List<JobPost>> getAllJobPosts() {

@@ -5,8 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.example.Employee_recruitment_system.model.Candidate;
 
+import java.util.Optional;
+
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
-    // Additional methods specific to Candidate can be defined here if needed
-    
+
 }
