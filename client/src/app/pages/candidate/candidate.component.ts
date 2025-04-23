@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-candidate',
   standalone: true,
   templateUrl: './candidate.component.html',
-  styleUrls: ['./candidate.component.css']
+  styleUrls: ['./candidate.component.css'],
+  imports: [NgFor]
 })
 export class CandidateComponent implements OnInit {
   jobs: any[] = [];

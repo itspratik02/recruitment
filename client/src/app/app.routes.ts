@@ -17,7 +17,7 @@ export const routes: Routes = [
   { path: 'candidate-details', component: CandidateDetailsComponent },
   { path: 'ADMIN-dashboard', component: DashboardComponent },
   { path: 'HR-dashboard', component: DashboardComponent },
-  { path: 'HIRING_TEAM-dashboard', component: DashboardComponent },
+  { path: 'HIRING_TEAM-dashboard', component: HiringTeamComponent },
   { path: 'CANDIDATE-dashboard', component: CandidateComponent },
   { path: 'hiring-team', component: HiringTeamComponent }
 ];
