@@ -9,9 +9,14 @@ import java.time.LocalDate;
 @Data
 public class JobPost {
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long jdid;
+   private Long jdid;
+
+
+
 
     @ManyToOne
     @JoinColumn(name = "hiring_team_id", nullable = false)
