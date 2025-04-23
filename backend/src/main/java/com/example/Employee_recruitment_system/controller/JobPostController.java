@@ -16,9 +16,11 @@ public class JobPostController {
     @Autowired
     private JobPostService jobPostService;
 
-    @PostMapping("/createpost")
-    public ResponseEntity<JobPost> createJobPost(@RequestBody JobPost jobPost) {
-        return new ResponseEntity<>(jobPostService.saveJobPost(jobPost), HttpStatus.CREATED);
+    @PostMapping("/createjobposts")
+    public ResponseEntity<JobPost> createJobPost(@RequestBody JobPost jobPost,
+                                                 @RequestParam Long hiringTeamId) {
+        JobPost saved = jobPostService.saveJobPost(jobPost, hiringTeamId);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
     @GetMapping("/getposts")

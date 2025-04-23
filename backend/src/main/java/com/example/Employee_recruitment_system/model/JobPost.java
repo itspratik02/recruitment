@@ -9,20 +9,17 @@ import java.time.LocalDate;
 @Data
 public class JobPost {
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long jdid;
-
-
-
 
     @ManyToOne
     @JoinColumn(name = "hiring_team_id", nullable = false)
     private HiringTeam hiringTeam;
 
     private String title;
+    @Lob
+   @Column(length = 10000)
     private String responsibilities;
     private String description;
     private String requirements;
@@ -34,7 +31,6 @@ public class JobPost {
     @Transient
     private long appliedCount;
 
-    @Transient
-    private String createdByName;
+
 
 }

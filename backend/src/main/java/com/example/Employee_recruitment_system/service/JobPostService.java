@@ -23,10 +23,17 @@ public class JobPostService {
     @Autowired
     private HiringTeamRepository hiringTeamRepository;
 
-    public JobPost saveJobPost(JobPost jobPost) {
-        jobPost.setPostDate(LocalDate.now());
+    public JobPost saveJobPost(JobPost jobPost, Long hiringTeamId) {
+        HiringTeam hiringTeam = hiringTeamRepository.findById(hiringTeamId)
+                .orElseThrow(() -> new RuntimeException("Hiring team not found"));
+
+        jobPost.setHiringTeam(hiringTeam);
+
+
         return jobPostRepository.save(jobPost);
     }
+
+
 
     public List<JobPost> getAllJobPosts() {
         return jobPostRepository.findAll();
@@ -44,14 +51,6 @@ public class JobPostService {
             // Count how many candidates applied
             long count = applicationRepository.countByJobPostJdid(post.getJdid());
             post.setAppliedCount(count);
-
-            // Get hiring team name
-            if (post.getHiringTeam() != null) {
-                post.setCreatedByName(post.getHiringTeam().getName());
-            } else {
-                post.setCreatedByName("Unknown");
-            }
-
 
         }
 
