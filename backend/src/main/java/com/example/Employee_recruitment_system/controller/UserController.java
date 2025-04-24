@@ -35,7 +35,6 @@ public class UserController {
 
         if (role != null) {
             String token = jwtUtil.generateToken(email);
-            System.out.println(token);
             return ResponseEntity.ok(Map.of("role", role, "token", token));
         } else {
             return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
