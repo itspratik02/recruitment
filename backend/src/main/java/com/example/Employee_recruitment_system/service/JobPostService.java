@@ -26,13 +26,14 @@ public class JobPostService {
     private HiringTeamRepository hiringTeamRepository;
 
     public JobPost saveJobPost(JobPost jobPost) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();  // Extract email from JWT
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String email = authentication.getName();  // Extract email from JWT
+//
+//
+//        HiringTeam hiringTeam = hiringTeamRepository.findByEmail(email)
+//                .orElseThrow(() -> new RuntimeException("Hiring team not found"+email));
 
-        HiringTeam hiringTeam = hiringTeamRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Hiring team not found"));
-
-        jobPost.setHiringTeam(hiringTeam);
+//        jobPost.setHiringTeam(hiringTeam);
         jobPost.setPostDate(LocalDate.now());
 
         return jobPostRepository.save(jobPost);

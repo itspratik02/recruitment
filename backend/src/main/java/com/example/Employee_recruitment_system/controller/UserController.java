@@ -3,6 +3,7 @@ package com.example.Employee_recruitment_system.controller;
 import com.example.Employee_recruitment_system.model.User;
 import com.example.Employee_recruitment_system.model.ApprovalStatus;
 import com.example.Employee_recruitment_system.service.UserService;
+import com.example.Employee_recruitment_system.service.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody User user) {
         return ResponseEntity.ok(Map.of("message",userService.register(user)));
@@ -28,7 +32,14 @@ public class UserController {
         String email = credentials.get("email");
         String password = credentials.get("password");
         String role = userService.login(email, password);
-        return ResponseEntity.ok(Map.of("role", role));
+
+        if (role != null) {
+            String token = jwtUtil.generateToken(email);
+            System.out.println(token);
+            return ResponseEntity.ok(Map.of("role", role, "token", token));
+        } else {
+            return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
+        }
     }
 
     @PutMapping("/approve/{userId}")

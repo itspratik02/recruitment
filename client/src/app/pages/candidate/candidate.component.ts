@@ -18,14 +18,14 @@ export class CandidateComponent implements OnInit {
 
   ngOnInit(): void {
     // Ensure the user is logged in
-    this.authService.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
-      if (!isAuthenticated) {
-        this.router.navigate(['/login']);
-      }
-    });
+    // this.authService.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
+    //   if (!isAuthenticated) {
+    //     this.router.navigate(['/login']);
+    //   }
+    // });
 
     // Fetch job posts from the backend
-    this.http.get<any[]>('http://localhost:8080/api/jobs').subscribe({
+    this.http.get<any[]>('http://localhost:8080/api/getposts').subscribe({
       next: (data) => {
         this.jobs = data;
       },

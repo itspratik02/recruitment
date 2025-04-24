@@ -19,6 +19,7 @@ public class JobPostController {
     @PostMapping("/createjobposts")
     public ResponseEntity<JobPost> createJobPost(@RequestBody JobPost jobPost) {
         JobPost saved = jobPostService.saveJobPost(jobPost);
+        System.out.println(saved+"JobPost Saved");
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 

@@ -15,7 +15,7 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  isLoading = false;
+  isLoading = false;  
 
   constructor(
     private router: Router,
@@ -45,9 +45,14 @@ export class LoginComponent implements OnInit {
 
       this.authService.login(email, password).subscribe({
         next: (response) => {
-          const role = response.role; // Get the role from the backend response
+          console.log(response);
+          const role = response.role; 
+          if(role.match("not")){
+            alert("Waiting for admin approval");
+            return;
+          }
           if (role) {
-            // Dynamically navigate to the role-based dashboard
+            alert(`/${role}-dashboard`);
             this.router.navigateByUrl(`/${role}-dashboard`);
           } else {
             alert('Invalid role received from the server.');

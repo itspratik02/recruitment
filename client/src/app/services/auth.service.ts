@@ -12,9 +12,22 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): Observable<{ role: string }> {
-    return this.http.post<{ role: string }>(`${this.baseUrl}/login`, { email, password });
-  } 
+  login(email: string, password: string): Observable<{ role: string; token: string }> {
+    return this.http.post<{ role: string; token: string }>(`${this.baseUrl}/login`, { email, password });
+  }
+
+  saveToken(token: string): void {
+    localStorage.setItem('jwtToken', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('jwtToken');
+  }
+
+  logout(): void {
+    localStorage.removeItem('jwtToken');
+    this.setAuthenticated(false);
+  }
 
   registerUser(user: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/register`, user);

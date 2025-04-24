@@ -67,7 +67,6 @@ public class UserService {
             user.setReferenceId(savedHiringTeam.getHiringTeamId());
             user.setIsApproved(ApprovalStatus.PENDING);
         }
-
         userRepository.save(user);
         return "Registration successful." + (user.getIsApproved() == ApprovalStatus.PENDING ? " Awaiting admin approval." : "");
     }
