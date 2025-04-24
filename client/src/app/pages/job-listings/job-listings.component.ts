@@ -5,6 +5,7 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { AboutComponent } from '../about/about.component';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { JobPostService } from '../../services/job-post.service';
 
 @Component({
   selector: 'app-job-listings',
@@ -16,38 +17,32 @@ import { AuthService } from '../../services/auth.service';
 export class JobListingsComponent implements OnInit {
   searchQuery = '';
   isLoggedIn = false;
-  jobs = [
-    { 
-      id: 1,
-      title: "Frontend Developer", 
-      company: "Sibility", 
-      location: "Remote", 
-      description: "Looking for an Angular developer." 
-    },
-    { 
-      id: 2,
-      title: "Backend Engineer", 
-      company: "Centelon IT solutions", 
-      location: "Bangalore, India", 
-      description: "Expertise in Spring Boot required." 
-    },
-    { 
-      id: 3,
-      title: "UI/UX Designer", 
-      company: "Centelon", 
-      location: "New York, USA", 
-      description: "Seeking a Figma expert." 
-    }
-  ];
-
+  jobs: any[] = [];
+    
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private jobPostService: JobPostService
   ) {}
 
-  ngOnInit() {
-    this.authService.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
-      this.isLoggedIn = isAuthenticated;
+  ngOnInit(): void {
+    this.authService.isAuthenticated$.subscribe({
+      next: (isAuthenticated: boolean) => {
+        this.isLoggedIn = isAuthenticated;
+      },
+      error: (error: any) => {
+        console.error('Error checking authentication status:', error);
+      }
+    });
+
+    this.jobPostService.getAllJobPosts().subscribe({
+      next: (data: any[]) => {
+        this.jobs = data;
+        console.log('Job posts fetched successfully:', this.jobs);
+      },
+      error: (error: any) => {
+        console.error('Error fetching job posts:', error);
+      }
     });
   }
 

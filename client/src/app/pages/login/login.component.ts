@@ -42,17 +42,20 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.isLoading = true;
       const { email, password } = this.loginForm.value;
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
       this.authService.login(email, password).subscribe({
         next: (response) => {
           console.log(response);
           const role = response.role; 
-          if(role.match("not")){
+          if (role.match("not")) {
             alert("Waiting for admin approval");
             return;
           }
           if (role) {
-            alert(`/${role}-dashboard`);
+            this.authService.saveToken(response.token);
+            localStorage.setItem('userRole', role);
+            console.log('User role:', role);
             this.router.navigateByUrl(`/${role}-dashboard`);
           } else {
             alert('Invalid role received from the server.');

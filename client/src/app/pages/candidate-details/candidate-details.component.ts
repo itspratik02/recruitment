@@ -1,19 +1,32 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-candidate-details',
   standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, NavbarComponent, DatePipe],
   templateUrl: './candidate-details.component.html',
-  styleUrls: ['./candidate-details.component.css'],
-  imports: [NgFor, ReactiveFormsModule, NgIf]
+  styleUrls: ['./candidate-details.component.css']
 })
 export class CandidateDetailsComponent implements OnInit {
   candidateForm: FormGroup;
-  currentStep = 'education'; // Tracks the current step (education, experience, certifications)
+  isEditMode = false;
+  isLoading = false;
+  error: string | null = null;
+  currentStep = 'education';
+  profileImage: string | null = null;
+  candidateName = '';
+  candidateTitle = '';
+  
   degrees = ['B.Tech', 'M.Tech', 'B.Sc', 'M.Sc', 'MBA', 'BCA', 'MCA', 'Diploma'];
-  years = Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i); // Last 50 years
+  years = Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i);
+  
+  educationData: any[] = [];
+  experienceData: any[] = [];
+  certificationsData: any[] = [];
 
   constructor(private fb: FormBuilder) {
     this.candidateForm = this.fb.group({
@@ -114,5 +127,82 @@ export class CandidateDetailsComponent implements OnInit {
     } else {
       alert('Please fill out all required fields.');
     }
+  }
+
+  toggleEditMode() {
+    this.isEditMode = !this.isEditMode;
+    if (this.isEditMode) {
+      // Initialize form with current data
+      this.initializeFormWithData();
+    }
+  }
+
+  initializeFormWithData() {
+    // Clear existing form arrays
+    while (this.educationControls.length) {
+      this.educationControls.removeAt(0);
+    }
+    while (this.experienceControls.length) {
+      this.experienceControls.removeAt(0);
+    }
+    while (this.certificationControls.length) {
+      this.certificationControls.removeAt(0);
+    }
+
+    // Add current data to form arrays
+    this.educationData.forEach(edu => {
+      this.educationControls.push(
+        this.fb.group({
+          collegeName: [edu.collegeName, Validators.required],
+          university: [edu.university, Validators.required],
+          degree: [edu.degree, Validators.required],
+          specialization: [edu.specialization, Validators.required],
+          startYear: [edu.startYear, Validators.required],
+          endYear: [edu.endYear, Validators.required],
+          percentage: [edu.percentage, [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]]
+        })
+      );
+    });
+
+    this.experienceData.forEach(exp => {
+      this.experienceControls.push(
+        this.fb.group({
+          companyName: [exp.companyName, Validators.required],
+          role: [exp.role, Validators.required],
+          startDate: [exp.startDate, Validators.required],
+          endDate: [exp.endDate],
+          description: [exp.description, Validators.required]
+        })
+      );
+    });
+
+    this.certificationsData.forEach(cert => {
+      this.certificationControls.push(
+        this.fb.group({
+          title: [cert.title, Validators.required],
+          issuedBy: [cert.issuedBy, Validators.required],
+          certificateURL: [cert.certificateURL, Validators.required]
+        })
+      );
+    });
+  }
+
+  async uploadImage() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    
+    input.onchange = (e: any) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.profileImage = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    
+    input.click();
   }
 }

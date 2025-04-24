@@ -1,4 +1,10 @@
+<button 
+      [routerLink]="['/candidate-details']" 
+        class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
+        Profile
+      </button>
 <div class="min-h-screen bg-gray-100 p-8">
+
   <h1 class="text-3xl font-bold text-gray-800 mb-6">Available Job Posts</h1>
   <div *ngFor="let job of jobs" class="bg-white p-6 rounded-lg shadow-md mb-4">
     <h2 class="text-xl font-semibold text-gray-800">{{ job.title }}</h2>
@@ -12,7 +18,7 @@
         Apply Now
       </button>
       <button 
-        (click)="viewJobDetails(job.id)" 
+      [routerLink]="['/job', job.jdid]" 
         class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
         View Details
       </button>

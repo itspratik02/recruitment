@@ -8,16 +8,59 @@ import { JobDetailsComponent } from './pages/job-details/job-details.component';
 import { CandidateDetailsComponent } from './pages/candidate-details/candidate-details.component';
 import { HiringTeamComponent } from './pages/hiring-team/hiring-team.component';
 import { CandidateComponent } from './pages/candidate/candidate.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: JobListingsComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'job/:id', component: JobDetailsComponent },
-  { path: 'candidate-details', component: CandidateDetailsComponent },
-  { path: 'ADMIN-dashboard', component: DashboardComponent },
-  { path: 'HR-dashboard', component: DashboardComponent },
-  { path: 'HIRING_TEAM-dashboard', component: HiringTeamComponent },
-  { path: 'CANDIDATE-dashboard', component: CandidateComponent },
-  { path: 'hiring-team', component: HiringTeamComponent }
+  { 
+    path: '', 
+    component: JobListingsComponent 
+  },
+  { 
+    path: 'login', 
+    component: LoginComponent 
+  },
+  { 
+    path: 'register', 
+    component: RegisterComponent 
+  },
+  { 
+    path: 'job/:id', 
+    component: JobDetailsComponent 
+  },
+  { 
+    path: 'candidate-details', 
+    component: CandidateDetailsComponent,
+    canActivate: [authGuard],
+    data: { role: 'CANDIDATE' }
+  },
+  { 
+    path: 'ADMIN-dashboard', 
+    component: DashboardComponent,
+     canActivate: [authGuard],
+    data: { role: 'ADMIN' }
+  },
+  { 
+    path: 'HR-dashboard', 
+    component: DashboardComponent,
+    canActivate: [authGuard],
+    data: { role: 'HR' }
+  },
+  { 
+    path: 'HIRING_TEAM-dashboard', 
+    component: HiringTeamComponent,
+    canActivate: [authGuard],
+    data: { role: 'HIRING_TEAM' }
+  },
+  { 
+    path: 'CANDIDATE-dashboard', 
+    component: CandidateComponent,
+    canActivate: [authGuard],
+    data: { role: 'CANDIDATE' }
+  },
+  { 
+    path: 'hiring-team', 
+    component: HiringTeamComponent,
+    canActivate: [authGuard],
+    data: { role: 'HIRING_TEAM' }
+  }
 ];
