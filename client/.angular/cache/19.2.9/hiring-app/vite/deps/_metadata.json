@@ -1,48 +1,82 @@
 {
+<<<<<<< HEAD:client/.angular/cache/19.2.5/hiring-app/vite/deps/_metadata.json
+  "hash": "c9aced41",
+  "configHash": "01da5015",
+  "lockfileHash": "c5772e43",
+  "browserHash": "e2786d4a",
+=======
   "hash": "1d0fa609",
   "configHash": "0b6c1c99",
   "lockfileHash": "6f5b9178",
   "browserHash": "8fc42c16",
+>>>>>>> 96825622e065a7acb76f0cf21b21d29d2aafa655:client/.angular/cache/19.2.9/hiring-app/vite/deps/_metadata.json
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
+<<<<<<< HEAD:client/.angular/cache/19.2.5/hiring-app/vite/deps/_metadata.json
+      "fileHash": "66cbe862",
+=======
       "fileHash": "32033078",
+>>>>>>> 96825622e065a7acb76f0cf21b21d29d2aafa655:client/.angular/cache/19.2.9/hiring-app/vite/deps/_metadata.json
       "needsInterop": false
     },
     "@angular/common/http": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
       "file": "@angular_common_http.js",
+<<<<<<< HEAD:client/.angular/cache/19.2.5/hiring-app/vite/deps/_metadata.json
+      "fileHash": "82560fe2",
+=======
       "fileHash": "66ee5dc3",
+>>>>>>> 96825622e065a7acb76f0cf21b21d29d2aafa655:client/.angular/cache/19.2.9/hiring-app/vite/deps/_metadata.json
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
+<<<<<<< HEAD:client/.angular/cache/19.2.5/hiring-app/vite/deps/_metadata.json
+      "fileHash": "ec285ea4",
+=======
       "fileHash": "26a9031d",
+>>>>>>> 96825622e065a7acb76f0cf21b21d29d2aafa655:client/.angular/cache/19.2.9/hiring-app/vite/deps/_metadata.json
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
+<<<<<<< HEAD:client/.angular/cache/19.2.5/hiring-app/vite/deps/_metadata.json
+      "fileHash": "5a2c72f1",
+=======
       "fileHash": "8b5db73d",
+>>>>>>> 96825622e065a7acb76f0cf21b21d29d2aafa655:client/.angular/cache/19.2.9/hiring-app/vite/deps/_metadata.json
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
+<<<<<<< HEAD:client/.angular/cache/19.2.5/hiring-app/vite/deps/_metadata.json
+      "fileHash": "b981b9d0",
+=======
       "fileHash": "2c59c7be",
+>>>>>>> 96825622e065a7acb76f0cf21b21d29d2aafa655:client/.angular/cache/19.2.9/hiring-app/vite/deps/_metadata.json
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
+<<<<<<< HEAD:client/.angular/cache/19.2.5/hiring-app/vite/deps/_metadata.json
+      "fileHash": "be35eafd",
+=======
       "fileHash": "ba5ffac0",
+>>>>>>> 96825622e065a7acb76f0cf21b21d29d2aafa655:client/.angular/cache/19.2.9/hiring-app/vite/deps/_metadata.json
       "needsInterop": false
     },
     "rxjs": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
       "file": "rxjs.js",
+<<<<<<< HEAD:client/.angular/cache/19.2.5/hiring-app/vite/deps/_metadata.json
+      "fileHash": "d1bb7516",
+=======
       "fileHash": "ecc0ae39",
       "needsInterop": false
     },
@@ -50,6 +84,7 @@
       "src": "../../../../../../node_modules/rxjs/dist/esm5/operators/index.js",
       "file": "rxjs_operators.js",
       "fileHash": "85029510",
+>>>>>>> 96825622e065a7acb76f0cf21b21d29d2aafa655:client/.angular/cache/19.2.9/hiring-app/vite/deps/_metadata.json
       "needsInterop": false
     }
   },
