@@ -48,6 +48,7 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           console.log(response);
           const role = response.role; 
+        
           if (role.match("not")) {
             alert("Waiting for admin approval");
             return;
@@ -55,6 +56,7 @@ export class LoginComponent implements OnInit {
           if (role) {
             this.authService.saveToken(response.token);
             localStorage.setItem('userRole', role);
+            localStorage.setItem('id', response.uid.toString());
             console.log('User role:', role);
             this.router.navigateByUrl(`/${role}-dashboard`);
           } else {

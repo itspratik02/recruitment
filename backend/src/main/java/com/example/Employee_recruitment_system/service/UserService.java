@@ -83,7 +83,7 @@ public class UserService {
             return "Invalid credentials";
         }
 
-        return  ""+user.getUserType();
+        return  user.getReferenceId()+""+user.getUserType();
     }
 
     public String approveUser(Long userId, String adminEmail) {

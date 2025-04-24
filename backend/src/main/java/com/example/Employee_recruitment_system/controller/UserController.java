@@ -2,6 +2,7 @@ package com.example.Employee_recruitment_system.controller;
 
 import com.example.Employee_recruitment_system.model.User;
 import com.example.Employee_recruitment_system.model.ApprovalStatus;
+import com.example.Employee_recruitment_system.repository.UserRepository;
 import com.example.Employee_recruitment_system.service.UserService;
 import com.example.Employee_recruitment_system.service.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class UserController {
 
         if (role != null) {
             String token = jwtUtil.generateToken(email);
-            return ResponseEntity.ok(Map.of("role", role, "token", token));
+            return ResponseEntity.ok(Map.of("role", role.substring(1),"uid",role.substring(0,1), "token", token));
         } else {
             return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
         }

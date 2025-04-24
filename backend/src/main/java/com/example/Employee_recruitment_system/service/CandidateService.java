@@ -28,7 +28,7 @@ public class CandidateService {
     @Transactional
     public void saveQualifications(Long candidateId, List<Qualification> qualifications) {
         Candidate candidate = candidateRepository.findById(candidateId)
-            .orElseThrow(() -> new RuntimeException("Candidate not found"));
+            .orElseThrow(() -> new RuntimeException("Candidate not found "));
         
         qualifications.forEach(qual -> {
             qual.setCandidate(candidate);
