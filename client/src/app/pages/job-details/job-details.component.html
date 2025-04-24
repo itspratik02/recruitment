@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gray-100 py-8">
+<div class="min-h-screen bg-gray-100 py-8" *ngIf="job">
   <div class="max-w-4xl mx-auto px-4">
     <div class="bg-white rounded-lg shadow-lg p-6">
       <!-- Job Header -->
@@ -6,7 +6,6 @@
         <h1 class="text-3xl font-bold text-gray-900">{{ job.title }}</h1>
         <div class="mt-4 flex items-center justify-between">
           <div>
-            <p class="text-xl text-gray-600">{{ job.company }}</p>
             <p class="text-gray-500">{{ job.location }}</p>
           </div> 
           <button routerLink="/candidate-details"
@@ -35,8 +34,8 @@
       <div class="mb-8">
         <h2 class="text-xl font-semibold mb-4">Requirements</h2>
         <ul class="list-disc pl-5 space-y-2">
-          <li *ngFor="let requirement of job.requirements" class="text-gray-700">
-            {{ requirement }}
+          <li  class="text-gray-700">
+            {{ job.requirements }}
           </li>
         </ul>
       </div>
@@ -45,8 +44,8 @@
       <div class="mb-8">
         <h2 class="text-xl font-semibold mb-4">Responsibilities</h2>
         <ul class="list-disc pl-5 space-y-2">
-          <li *ngFor="let responsibility of job.responsibilities" class="text-gray-700">
-            {{ responsibility }}
+          <li class="text-gray-700">
+            {{ job.responsibilities }}
           </li>
         </ul>
       </div>
@@ -64,4 +63,7 @@
       </div>
     </div>
   </div>
+</div>
+<div *ngIf="!job" class="text-center text-gray-500 py-8">
+  <p>Loading job details...</p>
 </div>

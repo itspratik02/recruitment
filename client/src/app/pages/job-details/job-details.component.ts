@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { JobPostService } from '../../services/job-post.service';
 
 @Component({
   selector: 'app-job-details',
@@ -11,40 +12,46 @@ import { CommonModule } from '@angular/common';
 })
 export class JobDetailsComponent implements OnInit {
   job: any;
-  isLoggedIn = false;
+  isLoggedIn:any = false;
 
   constructor(
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private jobPostService: JobPostService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    const jobId = Number(this.route.snapshot.params['id']);
-    // Temporary mock data - later this should come from a service
-    this.job = {
-      id: jobId,
-      title: "Frontend Developer",
-      company: "Sibility",
-      location: "Remote",
-      description: "Looking for an Angular developer.",
-      requirements: [
-        "3+ years of experience with Angular",
-        "Strong TypeScript skills",
-        "Experience with RxJS",
-        "Understanding of REST APIs"
-      ],
-      responsibilities: [
-        "Develop new features",
-        "Maintain existing codebase",
-        "Write unit tests",
-        "Collaborate with team members"
-      ]
-    };
+    this.loadJobDetails();
+    this.isLoggedIn = this.authService.isAuthenticated$.subscribe({
+      next: (isAuthenticated: boolean) => {
+        this.isLoggedIn = isAuthenticated;
+      },
+      error: (error: any) => {
+        console.error('Error checking authentication status:', error);
+      }
+    }); 
+  }
 
-    this.authService.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
-      this.isLoggedIn = isAuthenticated;
+  loadJobDetails() {
+    const jobId = +this.route.snapshot.paramMap.get('id')!; // this gets the job id from URL
+  
+    this.jobPostService.getAllJobPosts().subscribe({
+      next: (data: any[]) => {
+        console.log('Job posts fetched successfully:', data);
+        this.job = data.find(j => j.jdid === jobId); // replace `id` with correct property if needed
+        if (!this.job) {
+          console.error('Job not found for id:', jobId);
+        } else {
+          console.log('Job loaded successfully:', this.job);
+        }
+      },
+      error: (error: any) => {
+        console.error('Error fetching job posts:', error);
+      }
     });
   }
+  
 
   applyForJob() {
     // Add application logic here
