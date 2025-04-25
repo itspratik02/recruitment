@@ -2,11 +2,7 @@ import { createRequire } from 'module';const require = createRequire(import.meta
 import {
   DOCUMENT,
   isPlatformBrowser
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-BXKCYA5S.js
-} from "./chunk-JMUWFSID.js";
-========
-} from "./chunk-FBQAMQZS.js";
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-AQJBVMZB.js
+} from "./chunk-SZCM4W2U.js";
 import {
   Attribute,
   ChangeDetectorRef,
@@ -5017,8 +5013,4 @@ export {
    * License: MIT
    *)
 */
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-BXKCYA5S.js
-//# sourceMappingURL=chunk-BXKCYA5S.js.map
-========
-//# sourceMappingURL=chunk-AQJBVMZB.js.map
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-AQJBVMZB.js
+//# sourceMappingURL=chunk-Y7DN7E3R.js.map

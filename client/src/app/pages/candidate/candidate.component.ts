@@ -26,11 +26,11 @@ export class CandidateComponent implements OnInit {
 
   ngOnInit(): void {
     // Ensure the user is logged in
-    this.authService.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
-      if (!isAuthenticated) {
-        this.router.navigate(['/login']);
-      }
-    });
+    // this.authService.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
+    //   if (!isAuthenticated) {
+    //     this.router.navigate(['/login']);
+    //   }
+    // });
     
     this.jobPostService.getAllJobPosts().subscribe({
       next: (data: any[]) => {

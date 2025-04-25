@@ -4,37 +4,22 @@ import {
   BrowserModule,
   EVENT_MANAGER_PLUGINS,
   EventManagerPlugin
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-3JKJKFUG.js
-} from "./chunk-MDL2I56P.js";
+} from "./chunk-DV53NQFJ.js";
 import {
   HTTP_ROOT_INTERCEPTOR_FNS
-} from "./chunk-T2B7KMNB.js";
-========
-} from "./chunk-RQRVCUXS.js";
-import {
-  HTTP_ROOT_INTERCEPTOR_FNS
-} from "./chunk-E2W23Z76.js";
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-5A2X6IQM.js
+} from "./chunk-CTB4PZ6F.js";
 import {
   NullViewportScroller,
   PlatformLocation,
   ViewportScroller,
   getDOM,
   setRootDomAdapter
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-3JKJKFUG.js
-} from "./chunk-BXKCYA5S.js";
-========
-} from "./chunk-AQJBVMZB.js";
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-5A2X6IQM.js
+} from "./chunk-Y7DN7E3R.js";
 import {
   DOCUMENT,
   PLATFORM_SERVER_ID,
   XhrFactory
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-3JKJKFUG.js
-} from "./chunk-JMUWFSID.js";
-========
-} from "./chunk-FBQAMQZS.js";
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-5A2X6IQM.js
+} from "./chunk-SZCM4W2U.js";
 import {
   ALLOW_MULTIPLE_PLATFORMS,
   APP_ID,
@@ -16923,8 +16908,4 @@ export {
    * License: MIT
    *)
 */
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-3JKJKFUG.js
-//# sourceMappingURL=chunk-3JKJKFUG.js.map
-========
-//# sourceMappingURL=chunk-5A2X6IQM.js.map
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-5A2X6IQM.js
+//# sourceMappingURL=chunk-IQB7SYQZ.js.map

@@ -1,32 +1,20 @@
 import { createRequire } from 'module';const require = createRequire(import.meta.url);
 import {
   withHttpTransferCache
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-MDL2I56P.js
-} from "./chunk-T2B7KMNB.js";
-========
-} from "./chunk-E2W23Z76.js";
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-RQRVCUXS.js
+} from "./chunk-CTB4PZ6F.js";
 import {
   CommonModule,
   DomAdapter,
   getDOM,
   setRootDomAdapter
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-MDL2I56P.js
-} from "./chunk-BXKCYA5S.js";
-========
-} from "./chunk-AQJBVMZB.js";
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-RQRVCUXS.js
+} from "./chunk-Y7DN7E3R.js";
 import {
   DOCUMENT,
   PLATFORM_BROWSER_ID,
   XhrFactory,
   isPlatformServer,
   parseCookieValue
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-MDL2I56P.js
-} from "./chunk-JMUWFSID.js";
-========
-} from "./chunk-FBQAMQZS.js";
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-RQRVCUXS.js
+} from "./chunk-SZCM4W2U.js";
 import {
   APP_ID,
   ApplicationModule,
@@ -2040,8 +2028,4 @@ export {
    * License: MIT
    *)
 */
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-MDL2I56P.js
-//# sourceMappingURL=chunk-MDL2I56P.js.map
-========
-//# sourceMappingURL=chunk-RQRVCUXS.js.map
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-RQRVCUXS.js
+//# sourceMappingURL=chunk-DV53NQFJ.js.map

@@ -5,28 +5,16 @@ import {
   platformServer,
   renderApplication,
   renderModule
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-72KHR3X6.js
-} from "./chunk-3JKJKFUG.js";
-========
-} from "./chunk-5A2X6IQM.js";
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-QTWTYGBQ.js
+} from "./chunk-IQB7SYQZ.js";
 import {
   ROUTES,
   Router,
   loadChildren
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-72KHR3X6.js
-} from "./chunk-PB6YCX7R.js";
+} from "./chunk-F4UOYW57.js";
 import {
   APP_BASE_HREF,
   PlatformLocation
-} from "./chunk-BXKCYA5S.js";
-========
-} from "./chunk-BHJVASLN.js";
-import {
-  APP_BASE_HREF,
-  PlatformLocation
-} from "./chunk-AQJBVMZB.js";
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-QTWTYGBQ.js
+} from "./chunk-Y7DN7E3R.js";
 import {
   ApplicationRef,
   Compiler,
@@ -11999,8 +11987,4 @@ export {
   AngularAppEngine,
   createRequestHandler
 };
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-72KHR3X6.js
-//# sourceMappingURL=chunk-72KHR3X6.js.map
-========
-//# sourceMappingURL=chunk-QTWTYGBQ.js.map
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-QTWTYGBQ.js
+//# sourceMappingURL=chunk-A4IVN24Y.js.map

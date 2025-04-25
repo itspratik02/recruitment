@@ -1,11 +1,7 @@
 import { createRequire } from 'module';const require = createRequire(import.meta.url);
 import {
   Title
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-PB6YCX7R.js
-} from "./chunk-MDL2I56P.js";
-========
-} from "./chunk-RQRVCUXS.js";
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-BHJVASLN.js
+} from "./chunk-DV53NQFJ.js";
 import {
   HashLocationStrategy,
   LOCATION_INITIALIZED,
@@ -13,17 +9,10 @@ import {
   LocationStrategy,
   PathLocationStrategy,
   ViewportScroller
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-PB6YCX7R.js
-} from "./chunk-BXKCYA5S.js";
+} from "./chunk-Y7DN7E3R.js";
 import {
   DOCUMENT
-} from "./chunk-JMUWFSID.js";
-========
-} from "./chunk-AQJBVMZB.js";
-import {
-  DOCUMENT
-} from "./chunk-FBQAMQZS.js";
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-BHJVASLN.js
+} from "./chunk-SZCM4W2U.js";
 import {
   APP_BOOTSTRAP_LISTENER,
   ApplicationRef,
@@ -5991,8 +5980,4 @@ export {
    * License: MIT
    *)
 */
-<<<<<<<< HEAD:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-PB6YCX7R.js
-//# sourceMappingURL=chunk-PB6YCX7R.js.map
-========
-//# sourceMappingURL=chunk-BHJVASLN.js.map
->>>>>>>> 0b72ea02e41e1396927a6ccfd0f00627dc3a25f9:client/.angular/cache/19.2.9/hiring-app/vite/deps_ssr/chunk-BHJVASLN.js
+//# sourceMappingURL=chunk-F4UOYW57.js.map
