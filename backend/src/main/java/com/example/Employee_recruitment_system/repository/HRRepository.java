@@ -7,6 +7,5 @@ import com.example.Employee_recruitment_system.model.HR;
 
 @Repository
 public interface HRRepository extends JpaRepository<HR, Long> {
-    // Additional methods specific to HR can be defined here if needed
-    
+
 }

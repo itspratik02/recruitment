@@ -10,6 +10,7 @@ import lombok.Setter;
 public class HiringTeam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "hiring_team_id")
     private Long hiringTeamId;
 
     private String name;
