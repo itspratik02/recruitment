@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/candidate/profile")
+@RequestMapping("/api/candidate-profile")
 @CrossOrigin(origins = "http://localhost:4200")
 public class CandidateProfileController {
 
@@ -16,9 +16,10 @@ public class CandidateProfileController {
 
 
 
-    @GetMapping("/candidate/profile")
-    public Candidate getCandidateProfile() {
-        return candidateProfileService.getCandidateProfile();
+    @GetMapping("/{candidateId}/getCandidate")
+    public Candidate getCandidateProfile(@PathVariable long candidateId) {
+        System.out.println("\n\n\n"+candidateProfileService.getCandidateProfile(candidateId));
+        return candidateProfileService.getCandidateProfile(candidateId);
     }
 
     @PutMapping("/candidate/profile")

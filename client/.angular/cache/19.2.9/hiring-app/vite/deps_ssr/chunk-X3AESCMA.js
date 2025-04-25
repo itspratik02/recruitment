@@ -1,7 +1,7 @@
 import { createRequire } from 'module';const require = createRequire(import.meta.url);
 import {
   InjectionToken
-} from "./chunk-MSYU7RCV.js";
+} from "./chunk-LF5MHR5E.js";
 
 // node_modules/@angular/common/fesm2022/dom_tokens-rA0ACyx7.mjs
 var DOCUMENT = new InjectionToken(ngDevMode ? "DocumentToken" : "");
@@ -54,4 +54,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-JMUWFSID.js.map
+//# sourceMappingURL=chunk-X3AESCMA.js.map

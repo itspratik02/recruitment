@@ -23,7 +23,13 @@ export class CandidateDetailsComponent implements OnInit {
   profileImage: string | null = null;
   candidateName = '';
   candidateTitle = '';
+  candidate :any ;
   candidateId: number = localStorage.getItem('id') ? Number(localStorage.getItem('id')) : 0;
+  progress = 0;
+  progressBar = false;
+  edu: any[] = [];      
+  exp: any[] = [];
+  cert: any[] = [];
   
   degrees = ['B.Tech', 'M.Tech', 'B.Sc', 'M.Sc', 'MBA', 'BCA', 'MCA', 'Diploma'];
   years = Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i);
@@ -51,46 +57,70 @@ export class CandidateDetailsComponent implements OnInit {
   loadAllData() {
     this.isLoading = true;
     Promise.all([
-      this.loadQualifications(),
-      this.loadExperiences(),
-      this.loadCertificates()
+      // this.loadQualifications(),
+      // this.loadExperiences(),
+      // this.loadCertificates(),
+      this.loadCandidate()
     ]).finally(() => {
       this.isLoading = false;
     });
   }
+  async loadCandidate() {
+    this.candidateDetailsService.getCandidate(this.candidateId).subscribe({
+      next: (data) => {
+        this.initializeEducationForm();
+        this.initializeExperienceForm();
+        this.initializeCertificateForm();
+        this.candidate = data;
+        this.edu = this.candidate.education;
+        this.exp = this.candidate.experience;
+        this.cert = this.candidate.certifications;
+        alert(this.edu);
+        console.log(this.candidate.qualifications);
+        this.candidateName = this.candidate.fullName;
+      },
+      error: (err) => {
+        console.error('Error loading candidate:', err);
+        this.error = 'Failed to load candidate';
+      }
+    });
+  }
   
-  async loadQualifications() {
-    try {
-      const qualifications = await this.candidateDetailsService.getQualifications(this.candidateId).toPromise();
-      this.educationData = qualifications || [];
-      this.initializeEducationForm();
-    } catch (error) {
-      console.error('Error loading qualifications:', error);
-      this.error = 'Failed to load qualifications';
-    }
-  }
+  // async loadQualifications() {
+  //   try {
+  //     const qualifications = await this.candidateDetailsService.getQualifications(this.candidateId).toPromise();
+  //     this.educationData = qualifications || [];
+  //     console.log("Education data "+this.educationData);
+  //     this.initializeEducationForm();
+  //   } catch (error) {
+  //     console.error('Error loading qualifications:', error);
+  //     this.error = 'Failed to load qualifications';
+  //   }
+  // }
 
-  async loadExperiences() {
-    try {
-      const experiences = await this.candidateDetailsService.getExperiences(this.candidateId).toPromise();
-      this.experienceData = experiences || [];
-      this.initializeExperienceForm();
-    } catch (error) {
-      console.error('Error loading experiences:', error);
-      this.error = 'Failed to load experiences';
-    }
-  }
+  // async loadExperiences() {
+  //   try {
+  //     const experiences = await this.candidateDetailsService.getExperiences(this.candidateId).toPromise();
+  //     this.experienceData = experiences || [];
+  //     console.log( this.experienceData);
+  //     this.initializeExperienceForm();
+  //   } catch (error) {
+  //     console.error('Error loading experiences:', error);
+  //     this.error = 'Failed to load experiences';
+  //   }
+  // }
 
-  async loadCertificates() {
-    try {
-      const certificates = await this.candidateDetailsService.getCertificates(this.candidateId).toPromise();
-      this.certificationsData = certificates || [];
-      this.initializeCertificateForm();
-    } catch (error) {
-      console.error('Error loading certificates:', error);
-      this.error = 'Failed to load certificates';
-    }
-  }
+  // async loadCertificates() {
+  //   try {
+  //     const certificates = await this.candidateDetailsService.getCertificates(this.candidateId).toPromise();
+  //     this.certificationsData = certificates || [];
+  //     console.log("Certification data "+this.certificationsData);
+  //     this.initializeCertificateForm();
+  //   } catch (error) {
+  //     console.error('Error loading certificates:', error);
+  //     this.error = 'Failed to load certificates';
+  //   }
+  // }
 
   initializeEducationForm() {
     while (this.educationControls.length) {

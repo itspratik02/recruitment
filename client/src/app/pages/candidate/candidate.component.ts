@@ -48,4 +48,6 @@ export class CandidateComponent implements OnInit {
   viewJobDetails(jobId: number): void {
     this.router.navigate(['/job', jobId]);
   }
+  
 }
+

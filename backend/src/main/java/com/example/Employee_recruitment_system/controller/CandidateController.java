@@ -42,6 +42,7 @@ public class CandidateController {
 
     @GetMapping("/{candidateId}/qualifications")
     public ResponseEntity<List<Qualification>> getQualifications(@PathVariable Long candidateId) {
+        System.out.println(candidateService.getQualifications(candidateId));
         return ResponseEntity.ok(candidateService.getQualifications(candidateId));
     }
 

@@ -10,7 +10,10 @@ export class CandidateDetailsService {
   private baseUrl = 'http://localhost:8080/api/candidate-profile';
 
   constructor(private http: HttpClient) { }
-
+   
+  getCandidate(candidateId : number) : Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/${candidateId}/getCandidate`);
+  }
   // Qualifications (Education)
   getQualifications(candidateId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/${candidateId}/qualifications`);

@@ -30,10 +30,10 @@ public class CandidateProfileService {
     private CertificateRepository certificateRepository;
 
 
-    public Candidate getCandidateProfile() {
+    public Candidate getCandidateProfile(Long candidateId) {
         // Assuming the username (email) is used for login
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return candidateRepository.findByEmail(username)
+//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return candidateRepository.findById(candidateId)
                 .orElseThrow(() -> new RuntimeException("Candidate not found"));
     }
 

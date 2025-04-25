@@ -1,5 +1,6 @@
 package com.example.Employee_recruitment_system.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,14 +19,26 @@ public class Candidate {
     private String fullName;
     private String email;
     private String phone;
-    private String password;
 
     @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
+    @JsonManagedReference("qualification")
     private List<Qualification> qualifications;
 
     @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
+    @JsonManagedReference("experience")
     private List<Experience> experiences;
 
     @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
+    @JsonManagedReference("certificate")
     private List<Certificate> certificates;
+
+
+    public String toString() {
+        return "Candidate{" +
+                "candidateId=" + candidateId +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' + '}';
+
+    }
 }

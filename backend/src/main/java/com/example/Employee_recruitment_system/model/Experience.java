@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 @Getter @Setter
@@ -15,6 +17,7 @@ public class Experience {
 
     @ManyToOne
     @JoinColumn(name = "candidate_id")
+    @JsonBackReference("experience")
     private Candidate candidate;
 
     private String companyName;

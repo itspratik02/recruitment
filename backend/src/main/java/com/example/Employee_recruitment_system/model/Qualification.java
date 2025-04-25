@@ -3,6 +3,8 @@ package com.example.Employee_recruitment_system.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 @Getter @Setter
@@ -14,6 +16,7 @@ public class Qualification {
 
     @ManyToOne
     @JoinColumn(name = "candidate_id")
+    @JsonBackReference("qualification")
     private Candidate candidate;
 
     private String collegeName;
