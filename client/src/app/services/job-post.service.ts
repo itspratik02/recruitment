@@ -14,8 +14,8 @@ export class JobPostService {
     return this.http.get<any[]>(`${this.baseUrl}/getposts`);
   }
 
-  createJobPost(jobPost: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/createjobposts`, jobPost);
+  createJobPost(jobPost: any, email: String): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/${email}/createjobposts`, jobPost);
   }
 
   deleteJobPost(id: number): Observable<void> {

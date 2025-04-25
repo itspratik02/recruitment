@@ -34,6 +34,7 @@ export class HiringTeamComponent implements OnInit {
   activeJobPosts: any[] = [];
   totalApplications: number = 0;
   showCreateForm: boolean = false;
+  userEmail: string = localStorage.getItem("email") || '';
 
   newJobPost: JobPost = {
     title: '',
@@ -108,7 +109,7 @@ export class HiringTeamComponent implements OnInit {
   }
 
   createJobPost(): void {
-    this.jobPostService.createJobPost(this.newJobPost).subscribe({
+    this.jobPostService.createJobPost(this.newJobPost,this.userEmail).subscribe({
       next: (response) => {
         this.loadJobPosts();
         this.showCreateForm = false;

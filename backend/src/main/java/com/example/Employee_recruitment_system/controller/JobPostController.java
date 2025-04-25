@@ -16,10 +16,10 @@ public class JobPostController {
     @Autowired
     private JobPostService jobPostService;
 
-    @PostMapping("/createjobposts")
-    public ResponseEntity<JobPost> createJobPost(@RequestBody JobPost jobPost) {
-        JobPost saved = jobPostService.saveJobPost(jobPost);
-        System.out.println(saved+"JobPost Saved");
+    @PostMapping("/{email}/createjobposts")
+    public ResponseEntity<JobPost> createJobPost(@RequestBody JobPost jobPost, @PathVariable String email) {
+        System.out.println("JobPost Saved");
+        JobPost saved = jobPostService.saveJobPost(jobPost,email);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 

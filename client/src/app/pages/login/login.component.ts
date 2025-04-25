@@ -15,8 +15,8 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  isLoading = false;  
-
+  isLoading = true; // Initialize isLoading to true
+  
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading = false; 
     // Add any initialization logic here
   }
 
@@ -57,7 +58,12 @@ export class LoginComponent implements OnInit {
             this.authService.saveToken(response.token);
             localStorage.setItem('userRole', role);
             localStorage.setItem('id', response.uid.toString());
+            localStorage.setItem("email",email);
             console.log('User role:', role);
+            if (role.match("ADMIN")) {
+              this.router.navigateByUrl('/ADMIN-dashboard');
+            }
+            else
             this.router.navigateByUrl(`/${role}-dashboard`);
           } else {
             alert('Invalid role received from the server.');

@@ -33,7 +33,6 @@ export class CandidateComponent implements OnInit {
     this.jobPostService.getAllJobPosts().subscribe({
       next: (data: any[]) => {
         this.jobs = data;
-        console.log('Job posts fetched successfully:', this.jobs);
       },
       error: (error: any) => {
         console.error('Error fetching job posts:', error);
