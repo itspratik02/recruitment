@@ -27,132 +27,282 @@
     <div class="flex items-center gap-6 bg-white shadow rounded-lg p-6">
       <img [src]="profileImage || 'https://via.placeholder.com/150'" alt="Profile" class="w-24 h-24 rounded-full object-cover border-2 border-blue-500" />
       <div>
-        <h2 class="text-2xl font-bold text-gray-800">{{ candidateName|| 'Candidate Name' }}</h2>
-        <p class="text-gray-500">{{ candidate.email || 'Candidate Title' }}</p>
+        <h2 class="text-2xl font-bold text-gray-800">{{ candidateName || 'Candidate Name' }}</h2>
+        <p class="text-gray-500">{{ candidate?.email || 'Candidate Title' }}</p>
       </div>
     </div>
 
-    <div  class="data" >   this is the data
-        <div > 
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">Education</h3>
-            <ul class="list-disc pl-5">
-                <li *ngFor="let item of edu" class="text-gray-600">{{ item.collegeName }} - {{ item.degree }} ({{ item.startYear }} - {{ item.endYear }})</li>
-            </ul>
-            
-        </div>
+    <!-- Progress Bar -->
+    <div class="bg-white p-6 shadow rounded-lg">
+      <div class="mb-2 flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-gray-700">Profile Completion</h3>
+        <span class="text-sm font-medium">{{ progress }}%</span>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full h-4">
+        <div [class]="'h-full rounded-full transition-all duration-500 ' + getProgressColor()" 
+             [style.width.%]="progress"></div>
+      </div>
+      <div class="mt-3 text-sm text-gray-600">
+        <p *ngIf="progress < 100" class="font-medium">Required Education:</p>
+        <ul *ngIf="progress < 100" class="list-disc pl-5 mt-1 space-y-1">
+          <li *ngIf="!hasSSC()">SSC (10th)</li>
+          <li *ngIf="!hasHSC()">HSC (12th)</li>
+          <li *ngIf="!hasHigherEducation()">Diploma/Degree</li>
+        </ul>
+        <p *ngIf="progress === 100" class="text-green-600 font-medium">All required education details are complete!</p>
+      </div>
     </div>
-    
-    <!-- Form -->
-    <form [formGroup]="candidateForm" (ngSubmit)="onSubmit()" class="space-y-12">
-      <!-- Education -->
-      <div *ngIf="currentStep === 'education'" class="bg-white p-6 shadow rounded-lg">
-        <h3 class="text-xl font-semibold text-gray-700 mb-4">Education</h3>
-        <div formArrayName="education">
-          <div *ngFor="let edu of educationControls.controls; let i = index" [formGroupName]="i" class="space-y-4 border-b pb-4 mb-4">
+
+    <!-- Education Section -->
+    <div *ngIf="currentStep === 'education'" class="bg-white p-6 shadow rounded-lg">
+      <!-- View Mode -->
+      <div *ngIf="!isEditMode">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-semibold text-gray-700">Education Details</h3>
+          <button (click)="toggleEditMode()" class="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
+        </div>
+        <div *ngIf="edu && edu.length > 0" class="space-y-4">
+          <div *ngFor="let education of edu" class="border-b pb-4 last:border-b-0">
+            <!-- Education details as before -->
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="text-sm font-medium text-gray-700">College Name</label>
-                <input type="text" formControlName="collegeName" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                <p class="text-sm font-medium text-gray-500">College Name</p>
+                <p class="text-base">{{education.collegeName}}</p>
               </div>
               <div>
-                <label class="text-sm font-medium text-gray-700">University</label>
-                <input type="text" formControlName="university" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                <p class="text-sm font-medium text-gray-500">University</p>
+                <p class="text-base">{{education.university}}</p>
               </div>
               <div>
-                <label class="text-sm font-medium text-gray-700">Degree</label>
-                <select formControlName="degree" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
-                  <option value="" disabled>Select Degree</option>
-                  <option *ngFor="let degree of degrees" [value]="degree">{{ degree }}</option>
-                </select>
+                <p class="text-sm font-medium text-gray-500">Degree</p>
+                <p class="text-base">{{education.degree}}</p>
               </div>
               <div>
-                <label class="text-sm font-medium text-gray-700">Specialization</label>
-                <input type="text" formControlName="specialization" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                <p class="text-sm font-medium text-gray-500">Specialization</p>
+                <p class="text-base">{{education.specialization}}</p>
               </div>
               <div>
-                <label class="text-sm font-medium text-gray-700">Start Year</label>
-                <select formControlName="startYear" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
-                  <option value="" disabled>Select Year</option>
-                  <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-                </select>
+                <p class="text-sm font-medium text-gray-500">Duration</p>
+                <p class="text-base">{{education.startYear}} - {{education.endYear}}</p>
               </div>
               <div>
-                <label class="text-sm font-medium text-gray-700">End Year</label>
-                <select formControlName="endYear" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
-                  <option value="" disabled>Select Year</option>
-                  <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-                </select>
-              </div>
-              <div>
-                <label class="text-sm font-medium text-gray-700">Percentage</label>
-                <input type="text" formControlName="percentage" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                <p class="text-sm font-medium text-gray-500">Percentage</p>
+                <p class="text-base">{{education.percentage}}%</p>
               </div>
             </div>
-            <button type="button" (click)="removeEducation(i)" class="bg-red-500 text-white px-4 py-2 rounded mt-4">Remove</button>
           </div>
-          <button type="button" (click)="addEducation()" class="bg-blue-500 text-white px-4 py-2 rounded">Add Education</button>
         </div>
-        <button type="button" (click)="saveAndProceed('experience')" class="mt-6 bg-green-500 text-white px-6 py-2 rounded-lg">Save and Proceed</button>
+        <div *ngIf="!edu || edu.length === 0" class="text-center py-8">
+          <p class="text-gray-500">No education details added yet.</p>
+          <button (click)="toggleEditMode()" class="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg">Add Education</button>
+        </div>
       </div>
 
-      <!-- Experience -->
-      <div *ngIf="currentStep === 'experience'" class="bg-white p-6 shadow rounded-lg">
-        <h3 class="text-xl font-semibold text-gray-700 mb-4">Experience</h3>
-        <div formArrayName="experience">
-          <div *ngFor="let exp of experienceControls.controls; let i = index" [formGroupName]="i" class="space-y-4 border-b pb-4 mb-4">
+      <!-- Edit Mode -->
+      <div *ngIf="isEditMode">
+        <!-- Education form as before -->
+        <form [formGroup]="candidateForm" class="space-y-6">
+          <div formArrayName="education">
+            <div *ngFor="let edu of educationControls.controls; let i = index" [formGroupName]="i" class="space-y-4 border-b pb-4 mb-4">
+              <!-- Education form fields as before -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="text-sm font-medium text-gray-700">College Name</label>
+                  <input type="text" formControlName="collegeName" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-gray-700">University</label>
+                  <input type="text" formControlName="university" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-gray-700">Degree</label>
+                  <select formControlName="degree" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                    <option value="" disabled>Select Degree</option>
+                    <option *ngFor="let degree of degrees" [value]="degree">{{ degree }}</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-gray-700">Specialization</label>
+                  <input type="text" formControlName="specialization" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-gray-700">Start Year</label>
+                  <select formControlName="startYear" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                    <option value="" disabled>Select Year</option>
+                    <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-gray-700">End Year</label>
+                  <select formControlName="endYear" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                    <option value="" disabled>Select Year</option>
+                    <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-gray-700">Percentage</label>
+                  <input type="text" formControlName="percentage" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                </div>
+              </div>
+              <button type="button" (click)="removeEducation(i)" class="bg-red-500 text-white px-4 py-2 rounded mt-4">Remove</button>
+            </div>
+            <button type="button" (click)="addEducation()" class="bg-blue-500 text-white px-4 py-2 rounded">Add Education</button>
+          </div>
+          <div class="flex justify-between mt-6" *ngIf="currentStep === 'education'">
+            <button type="button" (click)="toggleEditMode()" class="bg-gray-500 text-white px-6 py-2 rounded-lg">Cancel</button>
+            <div class="space-x-4">
+              <button type="button" (click)="saveQualifications()" class="bg-blue-500 text-white px-6 py-2 rounded-lg">Save</button>
+              <button type="button" (click)="saveAndProceed('experience')" class="bg-green-500 text-white px-6 py-2 rounded-lg">Next</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Experience Section -->
+    <div *ngIf="currentStep === 'experience'" class="bg-white p-6 shadow rounded-lg">
+      <!-- View Mode -->
+      <div *ngIf="!isEditMode">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-semibold text-gray-700">Experience Details</h3>
+          <button (click)="toggleEditMode()" class="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
+        </div>
+        <div *ngIf="exp && exp.length > 0" class="space-y-4">
+          <div *ngFor="let experience of exp" class="border-b pb-4 last:border-b-0">
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="text-sm font-medium text-gray-700">Company Name</label>
-                <input type="text" formControlName="companyName" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                <p class="text-sm font-medium text-gray-500">Company Name</p>
+                <p class="text-base">{{experience.companyName}}</p>
               </div>
               <div>
-                <label class="text-sm font-medium text-gray-700">Role</label>
-                <input type="text" formControlName="role" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                <p class="text-sm font-medium text-gray-500">Role</p>
+                <p class="text-base">{{experience.role}}</p>
               </div>
               <div>
-                <label class="text-sm font-medium text-gray-700">Start Date</label>
-                <input type="date" formControlName="startDate" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
-              </div>
-              <div>
-                <label class="text-sm font-medium text-gray-700">End Date</label>
-                <input type="date" formControlName="endDate" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                <p class="text-sm font-medium text-gray-500">Duration</p>
+                <p class="text-base">{{experience.startDate}} - {{experience.endDate}}</p>
               </div>
               <div class="col-span-2">
-                <label class="text-sm font-medium text-gray-700">Description</label>
-                <textarea formControlName="description" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm"></textarea>
+                <p class="text-sm font-medium text-gray-500">Description</p>
+                <p class="text-base">{{experience.description}}</p>
               </div>
             </div>
           </div>
-
-          <button type="button" (click)="addExperience()" class="bg-blue-500 text-white px-4 py-2 rounded">Add Experience</button>
         </div>
-        <button type="button" (click)="saveAndProceed('certifications')" class="mt-6 bg-green-500 text-white px-6 py-2 rounded-lg">Save and Proceed</button>
+        <div *ngIf="!exp || exp.length === 0" class="text-center py-8">
+          <p class="text-gray-500">No experience details added yet.</p>
+          <button (click)="toggleEditMode()" class="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg">Add Experience</button>
+        </div>
       </div>
 
-      <!-- Certifications -->
-      <div *ngIf="currentStep === 'certifications'" class="bg-white p-6 shadow rounded-lg">
-        <h3 class="text-xl font-semibold text-gray-700 mb-4">Certifications</h3>
-        <div formArrayName="certifications">
-          <div *ngFor="let cert of certificationControls.controls; let i = index" [formGroupName]="i" class="space-y-4 border-b pb-4 mb-4">
+      <!-- Edit Mode -->
+      <div *ngIf="isEditMode">
+        <form [formGroup]="candidateForm" class="space-y-6">
+          <div formArrayName="experience">
+            <div *ngFor="let exp of experienceControls.controls; let i = index" [formGroupName]="i" class="space-y-4 border-b pb-4 mb-4">
+              <!-- Experience form fields -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="text-sm font-medium text-gray-700">Company Name</label>
+                  <input type="text" formControlName="companyName" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-gray-700">Role</label>
+                  <input type="text" formControlName="role" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-gray-700">Start Date</label>
+                  <input type="date" formControlName="startDate" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-gray-700">End Date</label>
+                  <input type="date" formControlName="endDate" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                </div>
+                <div class="col-span-2">
+                  <label class="text-sm font-medium text-gray-700">Description</label>
+                  <textarea formControlName="description" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm"></textarea>
+                </div>
+              </div>
+              <button type="button" (click)="removeExperience(i)" class="bg-red-500 text-white px-4 py-2 rounded mt-4">Remove</button>
+            </div>
+            <button type="button" (click)="addExperience()" class="bg-blue-500 text-white px-4 py-2 rounded">Add Experience</button>
+          </div>
+          <div class="flex justify-between mt-6" *ngIf="currentStep === 'experience'">
+            <button type="button" (click)="toggleEditMode()" class="bg-gray-500 text-white px-6 py-2 rounded-lg">Cancel</button>
+            <div class="space-x-4">
+              <button type="button" (click)="saveExperiences()" class="bg-blue-500 text-white px-6 py-2 rounded-lg">Save</button>
+              <button type="button" (click)="saveAndProceed('certifications')" class="bg-green-500 text-white px-6 py-2 rounded-lg">Next</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Certifications Section -->
+    <div *ngIf="currentStep === 'certifications'" class="bg-white p-6 shadow rounded-lg">
+      <!-- View Mode -->
+      <div *ngIf="!isEditMode">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-semibold text-gray-700">Certification Details</h3>
+          <button (click)="toggleEditMode()" class="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
+        </div>
+        <div *ngIf="cert && cert.length > 0" class="space-y-4">
+          <div *ngFor="let certification of cert" class="border-b pb-4 last:border-b-0">
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="text-sm font-medium text-gray-700">Title</label>
-                <input type="text" formControlName="title" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                <p class="text-sm font-medium text-gray-500">Title</p>
+                <p class="text-base">{{certification.title}}</p>
               </div>
               <div>
-                <label class="text-sm font-medium text-gray-700">Issued By</label>
-                <input type="text" formControlName="issuedBy" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                <p class="text-sm font-medium text-gray-500">Issued By</p>
+                <p class="text-base">{{certification.issuedBy}}</p>
               </div>
               <div class="col-span-2">
-                <label class="text-sm font-medium text-gray-700">Certificate URL</label>
-                <input type="text" formControlName="certificateURL" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                <p class="text-sm font-medium text-gray-500">Certificate URL</p>
+                <a [href]="certification.certificateURL" target="_blank" class="text-blue-500 hover:underline">{{certification.certificateURL}}</a>
               </div>
             </div>
           </div>
-          <button type="button" (click)="addCertification()" class="bg-blue-500 text-white px-4 py-2 rounded">Add Certification</button>
         </div>
-        <button type="submit" class="mt-6 bg-green-500 text-white px-6 py-2 rounded-lg">Save All</button>
+        <div *ngIf="!cert || cert.length === 0" class="text-center py-8">
+          <p class="text-gray-500">No certification details added yet.</p>
+          <button (click)="toggleEditMode()" class="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg">Add Certification</button>
+        </div>
       </div>
-    </form>
+
+      <!-- Edit Mode -->
+      <div *ngIf="isEditMode">
+        <form [formGroup]="candidateForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <div formArrayName="certifications">
+            <div *ngFor="let cert of certificationControls.controls; let i = index" [formGroupName]="i" class="space-y-4 border-b pb-4 mb-4">
+              <!-- Certification form fields -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="text-sm font-medium text-gray-700">Title</label>
+                  <input type="text" formControlName="title" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-gray-700">Issued By</label>
+                  <input type="text" formControlName="issuedBy" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                </div>
+                <div class="col-span-2">
+                  <label class="text-sm font-medium text-gray-700">Certificate URL</label>
+                  <input type="text" formControlName="certificateURL" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm">
+                </div>
+              </div>
+              <button type="button" (click)="removeCertification(i)" class="bg-red-500 text-white px-4 py-2 rounded mt-4">Remove</button>
+            </div>
+            <button type="button" (click)="addCertification()" class="bg-blue-500 text-white px-4 py-2 rounded">Add Certification</button>
+          </div>
+          <div class="flex justify-between mt-6" *ngIf="currentStep === 'certifications'">
+            <button type="button" (click)="toggleEditMode()" class="bg-gray-500 text-white px-6 py-2 rounded-lg">Cancel</button>
+            <div class="space-x-4">
+              <button type="button" (click)="saveCertificates()" class="bg-blue-500 text-white px-6 py-2 rounded-lg">Save</button>
+              <button type="submit" class="bg-green-500 text-white px-6 py-2 rounded-lg">Submit All</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

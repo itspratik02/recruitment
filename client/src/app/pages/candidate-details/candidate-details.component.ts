@@ -26,12 +26,12 @@ export class CandidateDetailsComponent implements OnInit {
   candidate :any ;
   candidateId: number = localStorage.getItem('id') ? Number(localStorage.getItem('id')) : 0;
   progress = 0;
-  progressBar = false;
+  progressBar = true;
   edu: any[] = [];      
   exp: any[] = [];
   cert: any[] = [];
   
-  degrees = ['B.Tech', 'M.Tech', 'B.Sc', 'M.Sc', 'MBA', 'BCA', 'MCA', 'Diploma'];
+  degrees = ['SSC', 'HSC', 'B.Tech', 'M.Tech', 'B.Sc', 'M.Sc', 'MBA', 'BCA', 'MCA', 'Diploma'];
   years = Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i);
   
   educationData: any[] = [];
@@ -65,19 +65,26 @@ export class CandidateDetailsComponent implements OnInit {
       this.isLoading = false;
     });
   }
+
   async loadCandidate() {
     this.candidateDetailsService.getCandidate(this.candidateId).subscribe({
       next: (data) => {
+        this.candidate = data;
+        // Map the properties correctly from backend model
+        this.edu = this.candidate.qualifications || [];
+        this.exp = this.candidate.experiences || [];
+        this.cert = this.candidate.certificates || [];
+        this.candidateName = this.candidate.fullName;
+        console.log('Candidate data:', this.candidate);
+        console.log('Qualifications:', this.edu);
+        console.log('Experiences:', this.exp);
+        console.log('Certificates:', this.cert);
+
+        this.calculateProgress();
+        // Initialize forms after data is loaded
         this.initializeEducationForm();
         this.initializeExperienceForm();
         this.initializeCertificateForm();
-        this.candidate = data;
-        this.edu = this.candidate.education;
-        this.exp = this.candidate.experience;
-        this.cert = this.candidate.certifications;
-        alert(this.edu);
-        console.log(this.candidate.qualifications);
-        this.candidateName = this.candidate.fullName;
       },
       error: (err) => {
         console.error('Error loading candidate:', err);
@@ -85,7 +92,7 @@ export class CandidateDetailsComponent implements OnInit {
       }
     });
   }
-  
+
   // async loadQualifications() {
   //   try {
   //     const qualifications = await this.candidateDetailsService.getQualifications(this.candidateId).toPromise();
@@ -187,20 +194,34 @@ export class CandidateDetailsComponent implements OnInit {
 
   // Save and proceed to the next step
   async saveAndProceed(nextStep: string) {
-    if (this.currentStep === 'education') {
-      await this.saveQualifications();
-    } else if (this.currentStep === 'experience') {
-      await this.saveExperiences();
+    try {
+      if (this.currentStep === 'education') {
+        await this.saveQualifications();
+        this.edu = this.educationControls.value;
+      } else if (this.currentStep === 'experience') {
+        await this.saveExperiences();
+        this.exp = this.experienceControls.value;
+      }
+      this.isEditMode = false;
+      this.currentStep = nextStep;
+    } catch (error) {
+      console.error('Error saving data:', error);
+      alert('Failed to save. Please try again.');
     }
-    this.currentStep = nextStep;
   }
 
   async saveQualifications() {
     try {
+      // Only send the newly added education entries
+      const newQualifications = this.educationControls.value;
       await this.candidateDetailsService.saveQualifications(
         this.candidateId,
-        this.educationControls.value
+        newQualifications
       ).toPromise();
+      
+      // Update local data and recalculate progress
+      this.edu = await this.candidateDetailsService.getCandidate(this.candidateId).toPromise().then(data => data.qualifications || []);
+      this.calculateProgress();
       alert('Qualifications saved successfully!');
     } catch (error) {
       console.error('Error saving qualifications:', error);
@@ -210,10 +231,15 @@ export class CandidateDetailsComponent implements OnInit {
 
   async saveExperiences() {
     try {
+      const newExperiences = this.experienceControls.value;
       await this.candidateDetailsService.saveExperiences(
         this.candidateId,
-        this.experienceControls.value
+        newExperiences
       ).toPromise();
+      alert('Experiences saved successfully!');
+
+      // Update local data
+      this.exp = await this.candidateDetailsService.getCandidate(this.candidateId).toPromise().then(data => data.experiences || []);
     } catch (error) {
       console.error('Error saving experiences:', error);
       this.error = 'Failed to save experiences';
@@ -222,10 +248,14 @@ export class CandidateDetailsComponent implements OnInit {
 
   async saveCertificates() {
     try {
+      const newCertificates = this.certificationControls.value;
       await this.candidateDetailsService.saveCertificates(
         this.candidateId,
-        this.certificationControls.value
+        newCertificates
       ).toPromise();
+      alert('Certificates saved successfully!');
+      // Update local data
+      this.cert = await this.candidateDetailsService.getCandidate(this.candidateId).toPromise().then(data => data.certificates || []);
     } catch (error) {
       console.error('Error saving certificates:', error);
       this.error = 'Failed to save certificates';
@@ -237,6 +267,8 @@ export class CandidateDetailsComponent implements OnInit {
     if (this.candidateForm.valid) {
       try {
         await this.saveCertificates();
+        this.cert = this.certificationControls.value;
+        this.isEditMode = false;
         alert('All details submitted successfully!');
       } catch (error) {
         console.error('Error saving form:', error);
@@ -250,10 +282,61 @@ export class CandidateDetailsComponent implements OnInit {
   toggleEditMode() {
     this.isEditMode = !this.isEditMode;
     if (this.isEditMode) {
-      // Initialize form with current data
-      this.initializeFormWithData();
+      // When entering edit mode, populate the form with current data
+      if (this.currentStep === 'education' && this.edu?.length > 0) {
+        while (this.educationControls.length) {
+          this.educationControls.removeAt(0);
+        }
+        this.edu.forEach(education => {
+          this.educationControls.push(
+            this.fb.group({
+              collegeName: [education.collegeName, Validators.required],
+              university: [education.university, Validators.required],
+              degree: [education.degree, Validators.required],
+              specialization: [education.specialization, Validators.required],
+              startYear: [education.startYear, Validators.required],
+              endYear: [education.endYear, Validators.required],
+              percentage: [education.percentage, [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]]
+            })
+          );
+        });
+      } else if (this.currentStep === 'experience' && this.exp?.length > 0) {
+        while (this.experienceControls.length) {
+          this.experienceControls.removeAt(0);
+        }
+        this.exp.forEach(experience => {
+          this.experienceControls.push(
+            this.fb.group({
+              companyName: [experience.companyName, Validators.required],
+              role: [experience.role, Validators.required],
+              startDate: [experience.startDate, Validators.required],
+              endDate: [experience.endDate],
+              description: [experience.description, Validators.required]
+            })
+          );
+        });
+      } else if (this.currentStep === 'certifications' && this.cert?.length > 0) {
+        while (this.certificationControls.length) {
+          this.certificationControls.removeAt(0);
+        }
+        this.cert.forEach(certification => {
+          this.certificationControls.push(
+            this.fb.group({
+              title: [certification.title, Validators.required],
+              issuedBy: [certification.issuedBy, Validators.required],
+              certificateURL: [certification.certificateURL, Validators.required]
+            })
+          );
+        });
+      }
     }
   }
+
+  // Update the navigateToStep method to reset edit mode
+  // navigateToStep(step: string) {
+  //   this.isEditMode = false;
+  //   this.currentStep = step;
+  // }
 
   initializeFormWithData() {
     // Clear existing form arrays
@@ -393,6 +476,37 @@ export class CandidateDetailsComponent implements OnInit {
 
   // Navigate to a specific step
   navigateToStep(step: string) {
+    this.isEditMode = false;
     this.currentStep = step;
+  }
+
+  hasSSC(): boolean {
+    return this.edu?.some(e => e.degree === 'SSC') ?? false;
+  }
+
+  hasHSC(): boolean {
+    return this.edu?.some(e => e.degree === 'HSC') ?? false;
+  }
+
+  hasHigherEducation(): boolean {
+    return this.edu?.some(e => 
+      ['B.Tech', 'M.Tech', 'B.Sc', 'M.Sc', 'MBA', 'BCA', 'MCA', 'Diploma'].includes(e.degree)
+    ) ?? false;
+  }
+
+  calculateProgress() {
+    let completedRequirements = 0;
+    if (this.hasSSC()) completedRequirements++;
+    if (this.hasHSC()) completedRequirements++;
+    if (this.hasHigherEducation()) completedRequirements++;
+
+    this.progress = (completedRequirements / 3) * 100;
+    return this.progress;
+  }
+
+  getProgressColor(): string {
+    if (this.progress < 33) return 'bg-red-500';
+    if (this.progress < 66) return 'bg-yellow-500';
+    return 'bg-green-500';
   }
 }
