@@ -11,6 +11,7 @@ public class JobPost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "jdid")
    private Long jdid;
 
     @ManyToOne

@@ -1,26 +1,31 @@
 package com.example.Employee_recruitment_system.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "assessment")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Assessment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long assessmentId;
+    @Column(name = "assessment_id")
+    private Long assessmentID;
 
     @ManyToOne
     @JoinColumn(name = "jdid", nullable = false)
-    private JobPost jobPost;
-
-    @ManyToOne
-    @JoinColumn(name = "hiring_team_id", nullable = false)
-    private HiringTeam hiringTeam;
+    private JobPost jd;
 
     private int duration;
     private int totalMarks;
     private int passingMarks;
     private String instructions;
 
-    // Getters and Setters
 }
