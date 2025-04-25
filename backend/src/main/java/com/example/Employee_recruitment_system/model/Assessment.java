@@ -23,6 +23,10 @@ public class Assessment {
     @JoinColumn(name = "jdid", nullable = false)
     private JobPost jd;
 
+    @ManyToOne
+    @JoinColumn(name = "hiring_team_id", nullable = false)
+    private HiringTeam hiringTeam;
+
     private int duration;
     private int totalMarks;
     private int passingMarks;

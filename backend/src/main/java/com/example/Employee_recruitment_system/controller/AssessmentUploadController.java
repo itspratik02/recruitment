@@ -14,28 +14,18 @@ public class AssessmentUploadController {
 
     private final AssessmentUploadService assessmentUploadService;
 
-    @Autowired
     public AssessmentUploadController(AssessmentUploadService assessmentUploadService) {
         this.assessmentUploadService = assessmentUploadService;
     }
 
     @PostMapping("/upload/{jobPostId}")
-    public ResponseEntity<String> uploadAssessment(@RequestParam("file") MultipartFile file, @PathVariable Long jobPostId) {
-        try {
-            // Log the start of the file upload
-            System.out.println("Uploading file for Job Post ID: " + jobPostId);
+    public ResponseEntity<String> uploadAssessmentFile(
+            @PathVariable Long jobPostId,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("hiringTeamEmail") String hiringTeamEmail) {
 
-            assessmentUploadService.uploadAssessmentData(file, jobPostId);
-
-            // Log successful upload
-            return ResponseEntity.ok("Assessment uploaded successfully.");
-        } catch (Exception e) {
-            // Log detailed error
-            System.err.println("Error during file upload: " + e.getMessage());
-            e.printStackTrace();
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to upload assessment: " + e.getMessage());
-        }
+        assessmentUploadService.processExcelFile(file, jobPostId, hiringTeamEmail);
+        return ResponseEntity.ok("Assessment and questions uploaded successfully");
     }
+
 }
