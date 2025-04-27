@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface ExperienceRepository extends JpaRepository<Experience, Long> {
     List<Experience> findByCandidate_CandidateId(Long candidateId);
+    void deleteByCandidate_CandidateId(Long candidateId);
 }

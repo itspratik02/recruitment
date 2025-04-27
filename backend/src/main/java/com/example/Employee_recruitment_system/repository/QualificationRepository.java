@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface QualificationRepository extends JpaRepository<Qualification, Long> {
     List<Qualification> findByCandidate_CandidateId(Long candidateId);
-
+    void deleteByCandidate_CandidateId(Long candidateId);
 }

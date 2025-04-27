@@ -8,5 +8,5 @@ import java.util.List;
 @Repository
 public interface CertificateRepository extends JpaRepository<Certificate, Long> {
     List<Certificate> findByCandidate_CandidateId(Long candidateId);
-
+    void deleteByCandidate_CandidateId(Long candidateId);
 }

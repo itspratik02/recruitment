@@ -18,7 +18,6 @@ public class CandidateProfileController {
 
     @GetMapping("/{candidateId}/getCandidate")
     public Candidate getCandidateProfile(@PathVariable long candidateId) {
-        System.out.println("\n\n\n"+candidateProfileService.getCandidateProfile(candidateId));
         return candidateProfileService.getCandidateProfile(candidateId);
     }
 
