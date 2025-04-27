@@ -6,14 +6,46 @@ import { DatePipe } from '@angular/common';
 import { CandidateDetailsService } from '../../services/candidate-details.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { CandidateComponent } from '../candidate/candidate.component';
+
+interface Education {
+  id?: number;
+  educationId?: number;
+  collegeName: string;
+  university: string;
+  degree: string;
+  specialization: string;
+  startYear: number;
+  endYear: number;
+  percentage: number;
+}
+
+interface Experience {
+  id?: number;
+  experienceId?: number;
+  companyName: string;
+  role: string;
+  startDate: Date;
+  endDate: Date;
+  description: string;
+}
+
+interface Certificate {
+  id?: number;
+  certificateId?: number;
+  title: string;
+  issuedBy: string;
+  certificateURL: string;
+}
 
 @Component({
   selector: 'app-candidate-details',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NavbarComponent, DatePipe, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, NavbarComponent, HttpClientModule,CandidateComponent],
   templateUrl: './candidate-details.component.html',
   styleUrls: ['./candidate-details.component.css']
 })
+
 export class CandidateDetailsComponent implements OnInit {
   candidateForm: FormGroup;
   isEditMode = false;
@@ -37,6 +69,8 @@ export class CandidateDetailsComponent implements OnInit {
   educationData: any[] = [];
   experienceData: any[] = [];
   certificationsData: any[] = [];
+  
+  addNewMode = false;
   
   constructor(
     private fb: FormBuilder,
@@ -130,6 +164,7 @@ export class CandidateDetailsComponent implements OnInit {
   // }
 
   initializeEducationForm() {
+    console.log(this.progress);
     while (this.educationControls.length) {
       this.educationControls.removeAt(0);
     }
@@ -201,8 +236,11 @@ export class CandidateDetailsComponent implements OnInit {
       } else if (this.currentStep === 'experience') {
         await this.saveExperiences();
         this.exp = this.experienceControls.value;
+      } else if (this.currentStep === 'certifications') {
+        await this.saveCertificates();
+        this.cert = this.certificationControls.value;
       }
-      this.isEditMode = false;
+      this.isEditMode = false; // Turn off edit mode after saving
       this.currentStep = nextStep;
     } catch (error) {
       console.error('Error saving data:', error);
@@ -210,55 +248,99 @@ export class CandidateDetailsComponent implements OnInit {
     }
   }
 
+  // Updated save methods to prevent duplication
   async saveQualifications() {
     try {
-      // Only send the newly added education entries
-      const newQualifications = this.educationControls.value;
+      const currentQualifications = this.educationControls.value;
+      const updatedQualifications = currentQualifications.map((qualification: any) => {
+        if (qualification.id) {
+          return qualification; // Existing record, no duplication
+        } else {
+          delete qualification.id; // Ensure new records don't have an ID
+          return qualification;
+        }
+      });
+
+
+
       await this.candidateDetailsService.saveQualifications(
         this.candidateId,
-        newQualifications
+        updatedQualifications
       ).toPromise();
       
-      // Update local data and recalculate progress
-      this.edu = await this.candidateDetailsService.getCandidate(this.candidateId).toPromise().then(data => data.qualifications || []);
+      // Refresh data from server
+      const data = await this.candidateDetailsService.getCandidate(this.candidateId).toPromise();
+      this.edu = data.qualifications || [];
       this.calculateProgress();
       alert('Qualifications saved successfully!');
+      this.isEditMode = false;
+      this.addNewMode = false;
     } catch (error) {
       console.error('Error saving qualifications:', error);
       this.error = 'Failed to save qualifications';
+      alert('Failed to save. Please ensure you are logged in and try again.');
     }
   }
 
+  // Updated save methods to prevent duplication
   async saveExperiences() {
     try {
-      const newExperiences = this.experienceControls.value;
+      const currentExperiences = this.experienceControls.value;
+      const updatedExperiences = currentExperiences.map((experience: any) => {
+        if (experience.id) {
+          return experience; // Existing record, no duplication
+        } else {
+          delete experience.id; // Ensure new records don't have an ID
+          return experience;
+        }
+      });
+
       await this.candidateDetailsService.saveExperiences(
         this.candidateId,
-        newExperiences
+        updatedExperiences
       ).toPromise();
-      alert('Experiences saved successfully!');
 
-      // Update local data
-      this.exp = await this.candidateDetailsService.getCandidate(this.candidateId).toPromise().then(data => data.experiences || []);
+      // Refresh data from server
+      const data = await this.candidateDetailsService.getCandidate(this.candidateId).toPromise();
+      this.exp = data.experiences || [];
+      alert('Experiences saved successfully!');
+      this.isEditMode = false;
+      this.addNewMode = false;
     } catch (error) {
       console.error('Error saving experiences:', error);
       this.error = 'Failed to save experiences';
+      alert('Failed to save. Please ensure you are logged in and try again.');
     }
   }
 
+  // Updated save methods to prevent duplication
   async saveCertificates() {
     try {
-      const newCertificates = this.certificationControls.value;
+      const currentCertificates = this.certificationControls.value;
+      const updatedCertificates = currentCertificates.map((certificate: any) => {
+        if (certificate.id) {
+          return certificate; // Existing record, no duplication
+        } else {
+          delete certificate.id; // Ensure new records don't have an ID
+          return certificate;
+        }
+      });
+
       await this.candidateDetailsService.saveCertificates(
         this.candidateId,
-        newCertificates
+        updatedCertificates
       ).toPromise();
+
+      // Refresh data from server
+      const data = await this.candidateDetailsService.getCandidate(this.candidateId).toPromise();
+      this.cert = data.certificates || [];
       alert('Certificates saved successfully!');
-      // Update local data
-      this.cert = await this.candidateDetailsService.getCandidate(this.candidateId).toPromise().then(data => data.certificates || []);
+      this.isEditMode = false;
+      this.addNewMode = false;
     } catch (error) {
       console.error('Error saving certificates:', error);
       this.error = 'Failed to save certificates';
+      alert('Failed to save. Please ensure you are logged in and try again.');
     }
   }
 
@@ -279,56 +361,62 @@ export class CandidateDetailsComponent implements OnInit {
     }
   }
 
+  closeEditMode() {
+    this.isEditMode = false;
+  }
+
   toggleEditMode() {
-    this.isEditMode = !this.isEditMode;
-    if (this.isEditMode) {
-      // When entering edit mode, populate the form with current data
-      if (this.currentStep === 'education' && this.edu?.length > 0) {
-        while (this.educationControls.length) {
-          this.educationControls.removeAt(0);
-        }
-        this.edu.forEach(education => {
-          this.educationControls.push(
-            this.fb.group({
-              collegeName: [education.collegeName, Validators.required],
-              university: [education.university, Validators.required],
-              degree: [education.degree, Validators.required],
-              specialization: [education.specialization, Validators.required],
-              startYear: [education.startYear, Validators.required],
-              endYear: [education.endYear, Validators.required],
-              percentage: [education.percentage, [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]]
-            })
-          );
-        });
-      } else if (this.currentStep === 'experience' && this.exp?.length > 0) {
-        while (this.experienceControls.length) {
-          this.experienceControls.removeAt(0);
-        }
-        this.exp.forEach(experience => {
-          this.experienceControls.push(
-            this.fb.group({
-              companyName: [experience.companyName, Validators.required],
-              role: [experience.role, Validators.required],
-              startDate: [experience.startDate, Validators.required],
-              endDate: [experience.endDate],
-              description: [experience.description, Validators.required]
-            })
-          );
-        });
-      } else if (this.currentStep === 'certifications' && this.cert?.length > 0) {
-        while (this.certificationControls.length) {
-          this.certificationControls.removeAt(0);
-        }
-        this.cert.forEach(certification => {
-          this.certificationControls.push(
-            this.fb.group({
-              title: [certification.title, Validators.required],
-              issuedBy: [certification.issuedBy, Validators.required],
-              certificateURL: [certification.certificateURL, Validators.required]
-            })
-          );
-        });
+    
+    this.isEditMode = true;
+    this.addNewMode = false;
+    if (this.currentStep === 'education' && this.edu?.length > 0) {
+      while (this.educationControls.length) {
+        this.educationControls.removeAt(0);
       }
+      this.edu.forEach(education => {
+        this.educationControls.push(
+          this.fb.group({
+            id: [education.educationId], // Store the backend ID
+            collegeName: [education.collegeName, Validators.required],
+            university: [education.university, Validators.required],
+            degree: [education.degree, Validators.required],
+            specialization: [education.specialization, Validators.required],
+            startYear: [education.startYear, Validators.required],
+            endYear: [education.endYear, Validators.required],
+            percentage: [education.percentage, [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]]
+          })
+        );
+      });
+    } else if (this.currentStep === 'experience' && this.exp?.length > 0) {
+      while (this.experienceControls.length) {
+        this.experienceControls.removeAt(0);
+      }
+      this.exp.forEach(experience => {
+        this.experienceControls.push(
+          this.fb.group({
+            id: [experience.experienceId], // Store the backend ID
+            companyName: [experience.companyName, Validators.required],
+            role: [experience.role, Validators.required],
+            startDate: [experience.startDate, Validators.required],
+            endDate: [experience.endDate],
+            description: [experience.description, Validators.required]
+          })
+        );
+      });
+    } else if (this.currentStep === 'certifications' && this.cert?.length > 0) {
+      while (this.certificationControls.length) {
+        this.certificationControls.removeAt(0);
+      }
+      this.cert.forEach(certification => {
+        this.certificationControls.push(
+          this.fb.group({
+            id: [certification.certificateId], // Store the backend ID
+            title: [certification.title, Validators.required],
+            issuedBy: [certification.issuedBy, Validators.required],
+            certificateURL: [certification.certificateURL, Validators.required]
+          })
+        );
+      });
     }
   }
 
@@ -437,7 +525,25 @@ export class CandidateDetailsComponent implements OnInit {
 
   // Remove an education entry
   removeEducation(index: number) {
-    this.educationControls.removeAt(index);
+    const educationToRemove = this.educationControls.at(index).value;
+    if (educationToRemove.id) {
+      this.candidateDetailsService.deleteQualification(educationToRemove.id).subscribe({
+        next: async () => {
+          this.educationControls.removeAt(index);
+          // Refresh data from server
+          const data = await this.candidateDetailsService.getCandidate(this.candidateId).toPromise();
+          this.edu = data.qualifications || [];
+          this.calculateProgress();
+          alert('Education entry deleted successfully!');
+        },
+        error: (err: any) => {
+          console.error('Error deleting education entry:', err);
+          alert('Failed to delete education entry. Please try again.');
+        }
+      });
+    } else {
+      this.educationControls.removeAt(index);
+    }
   }
 
   // Add a new experience entry
@@ -455,11 +561,29 @@ export class CandidateDetailsComponent implements OnInit {
 
   // Remove an experience entry
   removeExperience(index: number) {
-    this.experienceControls.removeAt(index);
+    const experienceToRemove = this.experienceControls.at(index).value;
+    if (experienceToRemove.id) {
+      this.candidateDetailsService.deleteExperience(experienceToRemove.id).subscribe({
+        next: async () => {
+          this.experienceControls.removeAt(index);
+          // Refresh data from server
+          const data = await this.candidateDetailsService.getCandidate(this.candidateId).toPromise();
+          this.exp = data.experiences || [];
+          alert('Experience entry deleted successfully!');
+        },
+        error: (err: any) => {
+          console.error('Error deleting experience entry:', err);
+          alert('Failed to delete experience entry. Please try again.');
+        }
+      });
+    } else {
+      this.experienceControls.removeAt(index);
+    }
   }
 
   // Add a new certification entry
   addCertification() {
+  
     this.certificationControls.push(
       this.fb.group({
         title: ['', Validators.required],
@@ -471,7 +595,24 @@ export class CandidateDetailsComponent implements OnInit {
 
   // Remove a certification entry
   removeCertification(index: number) {
-    this.certificationControls.removeAt(index);
+    const certificationToRemove = this.certificationControls.at(index).value;
+    if (certificationToRemove.id) {
+      this.candidateDetailsService.deleteCertificate(certificationToRemove.id).subscribe({
+        next: async () => {
+          this.certificationControls.removeAt(index);
+          // Refresh data from server
+          const data = await this.candidateDetailsService.getCandidate(this.candidateId).toPromise();
+          this.cert = data.certificates || [];
+          alert('Certification entry deleted successfully!');
+        },
+        error: (err: any) => {
+          console.error('Error deleting certification entry:', err);
+          alert('Failed to delete certification entry. Please try again.');
+        }
+      });
+    } else {
+      this.certificationControls.removeAt(index);
+    }
   }
 
   // Navigate to a specific step
@@ -499,8 +640,9 @@ export class CandidateDetailsComponent implements OnInit {
     if (this.hasSSC()) completedRequirements++;
     if (this.hasHSC()) completedRequirements++;
     if (this.hasHigherEducation()) completedRequirements++;
-
+ 
     this.progress = (completedRequirements / 3) * 100;
+    this.candidateDetailsService.setProgress(this.progress);
     return this.progress;
   }
 
@@ -508,5 +650,56 @@ export class CandidateDetailsComponent implements OnInit {
     if (this.progress < 33) return 'bg-red-500';
     if (this.progress < 66) return 'bg-yellow-500';
     return 'bg-green-500';
+  }
+
+  toggleAddMode() {
+    this.addNewMode = true;
+    this.isEditMode = false;
+    if (this.currentStep === 'education') {
+      this.educationControls.push(
+        this.fb.group({
+          id: [null],
+          collegeName: ['', Validators.required],
+          university: ['', Validators.required],
+          degree: ['', Validators.required],
+          specialization: ['', Validators.required],
+          startYear: ['', Validators.required],
+          endYear: ['', Validators.required],
+          percentage: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]]
+        })
+      );
+    } else if (this.currentStep === 'experience') {
+      this.experienceControls.push(
+        this.fb.group({
+          id: [null],
+          companyName: ['', Validators.required],
+          role: ['', Validators.required],
+          startDate: ['', Validators.required],
+          endDate: [''],
+          description: ['', Validators.required]
+        })
+      );
+    } else if (this.currentStep === 'certifications') {
+      this.certificationControls.push(
+        this.fb.group({
+          id: [null],
+          title: ['', Validators.required],
+          issuedBy: ['', Validators.required],
+          certificateURL: ['', Validators.required]
+        })
+      );
+    }
+  }
+
+  cancelAdd() {
+    this.addNewMode = false;
+    // Remove the last form control (the new one being added)
+    if (this.currentStep === 'education') {
+      this.educationControls.removeAt(this.educationControls.length - 1);
+    } else if (this.currentStep === 'experience') {
+      this.experienceControls.removeAt(this.experienceControls.length - 1);
+    } else if (this.currentStep === 'certifications') {
+      this.certificationControls.removeAt(this.certificationControls.length - 1);
+    }
   }
 }

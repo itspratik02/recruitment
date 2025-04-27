@@ -6,15 +6,26 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CandidateDetailsService {
+ 
+  progress:number = 0;
   private baseUrl = 'http://localhost:8080/api/candidate-profile';
 
   constructor(private http: HttpClient) { }
-   
+  
+  setProgress(value: number) {
+    this.progress = value;
+  }
+
+  getProgress(): number {
+    return this.progress;
+  }
+
   getCandidate(candidateId: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/${candidateId}/getCandidate`);
   }
   
   saveQualifications(candidateId: number, qualifications: any[]): Observable<void> {
+    console.log(qualifications);
     return this.http.post<void>(`${this.baseUrl}/${candidateId}/qualifications`, qualifications);
   }
 
@@ -24,5 +35,18 @@ export class CandidateDetailsService {
 
   saveCertificates(candidateId: number, certificates: any[]): Observable<void> {
     return this.http.post<void>(`${this.baseUrl}/${candidateId}/certificates`, certificates);
+  }
+
+
+  deleteQualification(qualificationId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/qualifications/${qualificationId}`);
+  }
+
+  deleteExperience(experienceId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/experiences/${experienceId}`);
+  }
+
+  deleteCertificate(certificateId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/certificates/${certificateId}`);
   }
 }

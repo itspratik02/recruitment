@@ -71,6 +71,7 @@ export class LoginComponent implements OnInit {
         },
         error: (err) => {
           console.error('Login error:', err);
+          this.isLoading = false;
           alert('Login failed. Please check your credentials.');
         },
         complete: () => {

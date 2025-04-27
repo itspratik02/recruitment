@@ -149,7 +149,7 @@
             <button type="button" (click)="addEducation()" class="bg-blue-500 text-white px-4 py-2 rounded">Add Education</button>
           </div>
           <div class="flex justify-between mt-6" *ngIf="currentStep === 'education'">
-            <button type="button" (click)="toggleEditMode()" class="bg-gray-500 text-white px-6 py-2 rounded-lg">Cancel</button>
+            <button type="button" (click)="closeEditMode()" class="bg-gray-500 text-white px-6 py-2 rounded-lg">Cancel</button>
             <div class="space-x-4">
               <button type="button" (click)="saveQualifications()" class="bg-blue-500 text-white px-6 py-2 rounded-lg">Save</button>
               <button type="button" (click)="saveAndProceed('experience')" class="bg-green-500 text-white px-6 py-2 rounded-lg">Next</button>
@@ -228,7 +228,7 @@
             <button type="button" (click)="addExperience()" class="bg-blue-500 text-white px-4 py-2 rounded">Add Experience</button>
           </div>
           <div class="flex justify-between mt-6" *ngIf="currentStep === 'experience'">
-            <button type="button" (click)="toggleEditMode()" class="bg-gray-500 text-white px-6 py-2 rounded-lg">Cancel</button>
+            <button type="button" (click)="closeEditMode()"  class="bg-gray-500 text-white px-6 py-2 rounded-lg">Cancel</button>
             <div class="space-x-4">
               <button type="button" (click)="saveExperiences()" class="bg-blue-500 text-white px-6 py-2 rounded-lg">Save</button>
               <button type="button" (click)="saveAndProceed('certifications')" class="bg-green-500 text-white px-6 py-2 rounded-lg">Next</button>
@@ -295,7 +295,7 @@
             <button type="button" (click)="addCertification()" class="bg-blue-500 text-white px-4 py-2 rounded">Add Certification</button>
           </div>
           <div class="flex justify-between mt-6" *ngIf="currentStep === 'certifications'">
-            <button type="button" (click)="toggleEditMode()" class="bg-gray-500 text-white px-6 py-2 rounded-lg">Cancel</button>
+            <button type="button" (click)="closeEditMode()" class="bg-gray-500 text-white px-6 py-2 rounded-lg">Cancel</button>
             <div class="space-x-4">
               <button type="button" (click)="saveCertificates()" class="bg-blue-500 text-white px-6 py-2 rounded-lg">Save</button>
               <button type="submit" class="bg-green-500 text-white px-6 py-2 rounded-lg">Submit All</button>
@@ -306,3 +306,7 @@
     </div>
   </div>
 </div>
+
+
+
+

@@ -51,6 +51,12 @@
     </div>
   </div>
 
+  <app-resume-upload-popup 
+    *ngIf="showResumeUploadPopup" 
+    (resumeUploaded)="onResumeUploaded($event)"
+    (close)="showResumeUploadPopup = false">
+  </app-resume-upload-popup>
+
   <h1 class="text-3xl font-bold text-gray-800 mt-12 mb-6">Profile Section</h1>
   <!-- <app-candidate-details></app-candidate-details> -->
 </div>
