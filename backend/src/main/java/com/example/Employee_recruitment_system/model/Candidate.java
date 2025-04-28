@@ -19,6 +19,7 @@ public class Candidate {
     private String fullName;
     private String email;
     private String phone;
+    private int experience;
 
     @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
     @JsonManagedReference("qualification")

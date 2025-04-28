@@ -20,6 +20,9 @@ public class Experience {
     @JsonBackReference("experience")
     private Candidate candidate;
 
+
+
+
     private String companyName;
     private String role;
     private LocalDate startDate;

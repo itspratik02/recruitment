@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Entity
 @Table(name = "assessment")
 @Data
@@ -31,5 +34,8 @@ public class Assessment {
     private int totalMarks;
     private int passingMarks;
     private String instructions;
+
+    private LocalDate assessmentDate;
+    private LocalTime startTime;
 
 }

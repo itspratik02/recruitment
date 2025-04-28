@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.example.Employee_recruitment_system.model.Candidate;
 
 import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
@@ -13,4 +14,5 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
     Optional<Candidate> findByEmail(String email);
     boolean existsById(Long id);
     boolean existsByEmail(String email);
+    List<Candidate> findByJobPostId(Long jobPostId);
 }
