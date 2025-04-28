@@ -1,38 +1,36 @@
-<nav class="sticky top-12 left-1/2 transform -translate-x-1/2 w-full bg-transparent shadow-md z-50">
-  <div class="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-14">
-      <div class="flex items-center">
-        <img
-          src="centelonsolutions_logo-removebg-preview.png"
-          alt="Logo"
-          class="h-8"
-        />
-        <span class="text-black text-2xl font-semibold ml-2">Centelon</span>
-      </div>
+  <nav class="sticky top-12 left-1/2 transform -translate-x-1/2 w-full bg-transparent shadow-md z-50">
+    <div class="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <!-- <div class="flex items-center">
+          <img
+            src="centelonsolutions_logo-removebg-preview.png"
+            alt="Logo"
+            class="h-8"
+          />
+          <span class="text-black text-2xl font-semibold ml-2">Centelon</span>
+        </div> -->
 
-      <div class="md:flex space-x-6">
-        <a routerLink="/" class="text-black hover:text-blue-500 font-medium cursor-pointer">Home</a>
-        <a routerLink="/login" class="text-black hover:text-blue-500 font-medium cursor-pointer">Login</a>
-        <a routerLink="/about" class="text-black hover:text-blue-500 font-medium cursor-pointer">About</a>
-        <button 
-              [routerLink]="['/candidate-details']" 
-              class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
-              Profile
-        </button>
+         
+        <div class="md:flex space-x-6">
+          <a (click)="changeStep('job-listings')" [routerLink]="['/CANDIDATE-dashboard']" class="text-black hover:text-blue-500 font-medium cursor-pointer">Jobs</a>
+          <a (click)="changeStep('applications')"  class="text-black hover:text-blue-500 font-medium cursor-pointer">My Appications</a>
+          <a [routerLink]="['/candidate-details']" class="text-black hover:text-blue-500 font-medium cursor-pointer">Profile</a>
+          <a routerLink="/" class="text-black hover:text-blue-500 font-medium cursor-pointer">Home</a>
+          <a routerLink="/about" class="text-black hover:text-blue-500 font-medium cursor-pointer">About</a>
+          <a routerLink="/about" class="text-black hover:text-blue-500 font-medium cursor-pointer">Logout</a>
+        </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
 
 
 
 
-<div class="min-h-screen bg-gray-100 p-8">
-
+<div  *ngIf="currentStep === 'job-listings'" class="min-h-screen bg-gray-100 p-8">
 
   <h1 class="text-3xl font-bold text-gray-800 mb-6">Available Job Posts</h1>
-  <div *ngFor="let job of jobs" class="bg-white p-6 rounded-lg shadow-md mb-4">
+  <div *ngFor="let job of availableJobs" class="bg-white p-6 rounded-lg shadow-md mb-4">
     <h2 class="text-xl font-semibold text-gray-800">{{ job.title }}</h2>
     <p class="text-gray-600">{{ job.company }}</p>
     <p class="text-gray-500">{{ job.location }}</p>
@@ -57,6 +55,51 @@
     (close)="showResumeUploadPopup = false">
   </app-resume-upload-popup>
 
-  <h1 class="text-3xl font-bold text-gray-800 mt-12 mb-6">Profile Section</h1>
+
+
+
   <!-- <app-candidate-details></app-candidate-details> -->
+</div>
+<div *ngIf="currentStep === 'applications'" class="min-h-screen bg-gray-100 p-8">
+  <h1 class="text-3xl font-bold text-gray-800 mt-12 mb-6">My Applications</h1>
+
+  <div *ngFor="let job of appliedJobs" class="bg-white p-6 rounded-lg shadow-md mb-4">
+    <h2 class="text-xl font-semibold text-gray-800">{{ job.title }}</h2>
+    <p class="text-gray-600">{{ job.company }}</p>
+    <p class="text-gray-500">{{ job.location }}</p>
+    <p class="mt-2 text-gray-700">{{ job.description }}</p>
+    <div class="mt-4 flex space-x-4">
+      <button 
+        (click)="openDetails(job.jdid)"
+        class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
+        View Details
+      </button>
+    </div>
+  </div>
+
+
+  <!-- <div *ngFor="let application of applications" class="bg-white p-6 rounded-lg shadow-md mb-4">
+    <h2 class="text-xl font-semibold text-gray-800">{{ application.jobTitle }}</h2>
+    <p class="text-gray-600">{{ application.company }}</p>
+    <p class="text-gray-500">{{ application.status }}</p>
+    <p class="mt-2 text-gray-700">{{ application.dateApplied | date }}</p> -->
+  <!-- </div> -->
+</div>
+
+<div *ngIf="showPopup" class="popup-overlay">
+  <div class="popup-container">
+    <button class="close-btn" (click)="closePopup()">×</button>
+    <h2>Application Details</h2>
+    
+    <div class="popup-content">
+      <p><strong>Applied Date:</strong> {{jobForDetails.jobPost.applicationDate}}</p>
+      <p><strong>Progress:</strong> {{jobForDetails.progress}}</p>
+      <p><strong>Assessment Date:</strong> {{jobForDetails.assessmentDate}}</p>
+      <p><strong>Interview Date:</strong> {{jobForDetails.interviewDate}}</p>
+    </div>
+
+    <div class="button-container">
+      <button class="assessment-btn" (click)="giveAssessment()">Give Assessment</button>
+    </div>
+  </div>
 </div>

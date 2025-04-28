@@ -37,6 +37,9 @@ export class CandidateDetailsService {
     return this.http.post<void>(`${this.baseUrl}/${candidateId}/certificates`, certificates);
   }
 
+  getMyApplications(candidateId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/${candidateId}/applications`);
+  }
 
   deleteQualification(qualificationId: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/qualifications/${qualificationId}`);

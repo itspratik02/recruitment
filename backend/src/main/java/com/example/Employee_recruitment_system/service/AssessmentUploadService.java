@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.Iterator;import org.apache.poi.ss.usermodel.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,12 +37,8 @@ public class AssessmentUploadService {
     @Autowired
     private final JobPostRepository jobPostRepository;
 
-    @Autowired
 
-    private  final HiringTeamRepository hiringTeamRepository;
-
-
-    public void processExcelFile(MultipartFile file, Long jobPostId, String hiringTeamEmail) {
+    public void processExcelFile(MultipartFile file, Long jobPostId, int duration, int totalMarks, int passingMarks,int noOfQuestions, String instructions) {
         try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
             XSSFSheet sheet = workbook.getSheetAt(0);
 
@@ -50,43 +46,49 @@ public class AssessmentUploadService {
             JobPost jobPost = jobPostRepository.findById(jobPostId)
                     .orElseThrow(() -> new RuntimeException("Job post not found"));
 
-            HiringTeam hiringTeam = hiringTeamRepository.findByEmail(hiringTeamEmail)
-                    .orElseThrow(() -> new RuntimeException("Hiring team not found"));
-
-            // Read assessment metadata (first row assumed)
-            Row headerRow = sheet.getRow(0);
-            int duration = (int) headerRow.getCell(0).getNumericCellValue();
-            int totalMarks = (int) headerRow.getCell(1).getNumericCellValue();
-            int passingMarks = (int) headerRow.getCell(2).getNumericCellValue();
-            String instructions = headerRow.getCell(3).getStringCellValue();
-
             // Save Assessment
             Assessment assessment = new Assessment();
             assessment.setDuration(duration);
             assessment.setTotalMarks(totalMarks);
             assessment.setPassingMarks(passingMarks);
             assessment.setInstructions(instructions);
+            assessment.setNoOfQuestions(noOfQuestions);
             assessment.setJd(jobPost);
-            assessment.setHiringTeam(hiringTeam);
 
             assessmentRepository.save(assessment);
 
-            // Save Questions (start from second row)
+            // Start from row 1 (skip header)
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
                 if (row == null) continue;
 
                 Questions question = new Questions();
                 question.setAssessment(assessment);
-                question.setQuestionText(row.getCell(0).getStringCellValue());
-                question.setOptionA(row.getCell(1).getStringCellValue());
-                question.setOptionB(row.getCell(2).getStringCellValue());
-                question.setOptionC(row.getCell(3).getStringCellValue());
-                question.setOptionD(row.getCell(4).getStringCellValue());
-                question.setOptionE(row.getCell(5).getStringCellValue());
-                question.setOptionF(row.getCell(6).getStringCellValue());
-                question.setCorrectOption(row.getCell(7).getStringCellValue());
-                question.setMarks((int) row.getCell(8).getNumericCellValue());
+                
+                // Using getCellValue helper method for all cell readings
+                question.setQuestionText(getCellValue(row.getCell(0))); // Question Text
+                question.setOptionA(getCellValue(row.getCell(1)));      // Option A
+                question.setOptionB(getCellValue(row.getCell(2)));      // Option B
+                question.setOptionC(getCellValue(row.getCell(3)));      // Option C
+                question.setOptionD(getCellValue(row.getCell(4)));      // Option D
+                question.setOptionE(getCellValue(row.getCell(5)));      // Option E
+                question.setOptionF(getCellValue(row.getCell(6)));      // Option F
+                question.setCorrectOption(getCellValue(row.getCell(7))); // Correct Option
+                
+                // Handle marks as numeric value
+                Cell marksCell = row.getCell(8);
+                if (marksCell != null) {
+                    if (marksCell.getCellType() == CellType.NUMERIC) {
+                        question.setMarks((int) marksCell.getNumericCellValue());
+                    } else {
+                        // Try to parse string value as number if not numeric
+                        try {
+                            question.setMarks(Integer.parseInt(marksCell.getStringCellValue().trim()));
+                        } catch (Exception e) {
+                            throw new RuntimeException("Invalid marks value in row " + (i + 1));
+                        }
+                    }
+                }
 
                 questionRepository.save(question);
             }
@@ -95,4 +97,36 @@ public class AssessmentUploadService {
             throw new RuntimeException("Failed to read Excel file", e);
         }
     }
+
+    private String getCellValue(Cell cell) {
+        if (cell == null) {
+            return "";
+        }
+        
+        switch (cell.getCellType()) {
+            case NUMERIC:
+                // Handle numeric values
+                double numericValue = cell.getNumericCellValue();
+                // Check if it's a whole number
+                if (numericValue == Math.floor(numericValue)) {
+                    return String.format("%.0f", numericValue);
+                }
+                return String.valueOf(numericValue);
+            case STRING:
+                return cell.getStringCellValue();
+            case BOOLEAN:
+                return String.valueOf(cell.getBooleanCellValue());
+            case FORMULA:
+                try {
+                    return String.valueOf(cell.getNumericCellValue());
+                } catch (Exception e) {
+                    return cell.getStringCellValue();
+                }
+            case BLANK:
+                return "";
+            default:
+                return "";
+        }
+    }
+
 }

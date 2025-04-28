@@ -40,5 +40,12 @@ public class JobPostController {
         jobPostService.deleteJobPost(jdid);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/getJobPosts")
+    public ResponseEntity<List<JobPost>> getAllJobPostsByCount() {
+
+      return ResponseEntity.ok(jobPostService.getAllAvailableJobPosts());
+
+    }
 }
 

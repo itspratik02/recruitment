@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
+
 @Entity
 @Table(name = "assessment")
 @Data
@@ -23,13 +27,11 @@ public class Assessment {
     @JoinColumn(name = "jdid", nullable = false)
     private JobPost jd;
 
-    @ManyToOne
-    @JoinColumn(name = "hiring_team_id", nullable = false)
-    private HiringTeam hiringTeam;
-
     private int duration;
     private int totalMarks;
     private int passingMarks;
     private String instructions;
-
+    private int noOfQuestions;
+    private LocalDate date;
+    private LocalTime startTime;
 }

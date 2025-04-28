@@ -4,6 +4,7 @@ import { CommonModule, NgFor, NgIf, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
+import { HttpClient } from '@angular/common/http';
 
 interface JobPost {
   jdid?: number;
@@ -28,6 +29,7 @@ interface JobPost {
 })
 export class HiringTeamComponent implements OnInit {
   jobPosts: any[] = [];
+  jobPostsNew: any[] = [];
   filteredJobPosts: any[] = [];
   filterOption: string = 'all';
   hiringTeamId: number = 1; // Replace with actual logged-in hiring team ID
@@ -35,6 +37,14 @@ export class HiringTeamComponent implements OnInit {
   totalApplications: number = 0;
   showCreateForm: boolean = false;
   userEmail: string = localStorage.getItem("email") || '';
+  selectedFile: File | null = null;
+  jobPostId: number = 0; 
+  sheetForm : String = 'false'; // Flag to control the visibility of the sheet form
+  duration: number = 0;
+  totalMarks: number = 0;
+  passingMarks: number = 0;
+  noOfQuestions: number = 0;
+  instructions: string = '';
 
   newJobPost: JobPost = {
     title: '',
@@ -51,11 +61,21 @@ export class HiringTeamComponent implements OnInit {
 
   constructor(
     private jobPostService: JobPostService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
     this.loadJobPosts();
+    this.jobPostService.getAllJobPostsWithCnt().subscribe({
+      next: (data) => {
+        this.jobPostsNew = data;
+        console.log('Job posts with applied count:', this.jobPosts);
+      },
+      error: (error) => {
+        console.error('Error loading job posts:', error);
+      }
+    });
   }
 
   loadJobPosts(): void {
@@ -70,6 +90,54 @@ export class HiringTeamComponent implements OnInit {
       }
     });
   }
+
+
+  addSheet(jdid : number){
+      this.jobPostId = jdid;
+      this.sheetForm = 'true'; // Show the sheet form
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      console.log('Selected file:', file);
+    }
+  }
+
+  closePopup() {
+    this.sheetForm = 'false'; // Hide the sheet form
+  }
+
+  onSubmit() {
+    if (!this.selectedFile) {
+      alert('Please select a file first!');
+      return;
+    }
+
+    const formData = new FormData();
+  formData.append('file', this.selectedFile);
+  formData.append('duration', this.duration.toString());
+  formData.append('totalMarks', this.totalMarks.toString());
+  formData.append('passingMarks', this.passingMarks.toString());
+  formData.append('noOfQuestions', this.noOfQuestions.toString());
+  formData.append('instructions', this.instructions);
+
+    const uploadUrl = `http://localhost:8080/api/assessment/upload/${this.jobPostId}`; 
+    // Change port if needed
+
+    this.http.post(uploadUrl, formData).subscribe({
+      next: (response:any) => {
+        console.log('Upload successful:', response);
+        alert('Assessment uploaded successfully!');
+      },
+      error: (error:any) => {
+        console.error('Upload failed:', error);
+        alert('Failed to upload assessment.');
+      }
+    });
+  }
+  
 
   processJobPosts(): void {
     const now = new Date();
