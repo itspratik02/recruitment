@@ -199,3 +199,135 @@ button:hover::after {
   background-size: 200% 200%;
   animation: gradientBG 15s ease infinite;
 }
+
+/* Popup container styles */
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.headIcon {
+  padding: 40px;
+  text-align: center;
+  color: red;
+}
+
+/* Blur effect on the body or main content */
+.popup-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  filter: blur(5px);
+  z-index: -1; /* Ensure it doesn't cover the popup */
+}
+
+/* Popup box styles */
+.popup {
+  background: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 500px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Heading styles */
+h2 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Input field container */
+.input-container {
+  margin-bottom: 15px;
+}
+
+/* Label styles */
+.input-container label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #555;
+  font-weight: bold;
+}
+
+/* Input and textarea styles */
+.input-container input,
+.input-container textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  margin-top: 5px;
+}
+
+.input-container textarea {
+  height: 120px;
+  resize: none;
+}
+
+/* Button styles */
+.button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.button-container button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.button-container button:hover {
+  background-color: #45a049;
+}
+
+/* Icon styles inside the input fields */
+.input-container label i {
+  margin-right: 10px;
+  color: #007BFF;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .popup {
+    padding: 20px;
+  }
+
+  .button-container button {
+    font-size: 14px;
+  }
+}

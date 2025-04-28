@@ -122,13 +122,17 @@ public class CandidateService {
         JobPost jobPost = jobPostRepository.findById(jobId) // Corrected to use the injected repository
                 .orElseThrow(() -> new RuntimeException("Job post not found"));
 
+        Long cnt = jobPost.getAppliedCount();
+        jobPost.setAppliedCount(cnt + 1);
+
+
         CandidateApplication application = new CandidateApplication();
         application.setCandidate(candidate);
         application.setJobPost(jobPost);
         application.setApplicationDate(LocalDate.now());
         application.setCurrentStatus("Applied");
         application.setResumePath(resumePath);
-
+        System.out.println("appliedCnt "+jobPost.getAppliedCount());
         candidateApplicationRepository.save(application);
     }
 

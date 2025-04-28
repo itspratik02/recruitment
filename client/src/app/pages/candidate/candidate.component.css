@@ -70,3 +70,100 @@ a:hover {
   transform: translateY(-100%);
   transition: transform 0.3s ease-in-out;
 } */
+
+/* Overlay background */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Popup container */
+.popup-container {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Title styling */
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #4CAF50;
+}
+
+/* Content inside popup */
+.popup-content p {
+  font-size: 16px;
+  margin: 10px 0;
+  color: #555;
+}
+
+.popup-content strong {
+  color: #333;
+}
+
+/* Button container */
+.button-container {
+  margin-top: 20px;
+}
+
+/* "Give Assessment" button */
+.assessment-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.assessment-btn:hover {
+  background-color: #45a049;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .popup-container {
+    width: 90%;
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .popup-content p {
+    font-size: 14px;
+  }
+
+  .assessment-btn {
+    width: 100%;
+  }
+}

@@ -10,8 +10,17 @@ export class JobPostService {
 
   constructor(private http: HttpClient) {}
 
+
+  // addAssesment(): Observable<any> {
+  //   this.http.post(uploadUrl, formData);
+  // }
+
   getAllJobPosts(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/getposts`);
+  }
+
+  getAllJobPostsWithCnt(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/getJobPosts`);
   }
 
   createJobPost(jobPost: any, email: String): Observable<any> {

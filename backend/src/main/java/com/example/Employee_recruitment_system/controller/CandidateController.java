@@ -3,6 +3,7 @@ package com.example.Employee_recruitment_system.controller;
 import com.example.Employee_recruitment_system.model.*;
 import com.example.Employee_recruitment_system.repository.CandidateRepository;
 import com.example.Employee_recruitment_system.service.CandidateService;
+import com.example.Employee_recruitment_system.service.CandidateApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,8 @@ public class CandidateController {
     private CandidateService candidateService;
     @Autowired
     private JavaMailSender mailSender;
-
+    @Autowired
+    private CandidateApplicationService candidateApplicationService;
 
     
     @PostMapping("/{candidateId}/qualifications")
@@ -75,11 +77,11 @@ public class CandidateController {
             System.out.println("Applying for job: " + jobId + " by candidate: " + candidateId);
             System.out.println("Resume file: " + resume.getOriginalFilename());
             
-            // Save the resume file to a directory
-//            String resumePath = candidateService.saveResume(resume);
+//             Save the resume file to a directory
+            String resumePath = candidateService.saveResume(resume);
 
-            // Save the application details
-//            candidateService.saveApplication(candidateId, jobId, resumePath);
+//             Save the application details
+            candidateService.saveApplication(candidateId, jobId, resumePath);
 
             // Log success
             System.out.println("Application submitted successfully.");
@@ -99,5 +101,14 @@ public class CandidateController {
             e.printStackTrace();
             return ResponseEntity.status(500).body(Map.of( "res","Failed to submit application: " + e.getMessage()));
         }
+    }
+
+    @GetMapping("/{candidateId}/applications")
+    public ResponseEntity<List<CandidateApplication>> getCandidateApplications(@PathVariable Long candidateId) {
+        System.out.println("Inside getCandidateApplications method "+ candidateId+"\n");
+
+        List<CandidateApplication> applications = candidateApplicationService.getApplicationsByCandidateId(candidateId);
+        System.out.println("\nApplications"+applications);
+        return ResponseEntity.ok(applications);
     }
 }
